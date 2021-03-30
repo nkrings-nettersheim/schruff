@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block nav %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+      <div class="col-sm-6">
+          <div class="jumbotron">
+            <h1>Aktueller Stand:</h1>
+            <p>Sie bestellen {{ order.product_long }} für den {{ day }}</p>
+            <form action="{% url 'order:collectiontime' %}" method="post">
+                {% csrf_token %}
+                <label for="broetchen_standard">Spießbraten Standard:</label>  <input type="text" id="broetchen_standard" name="broetchen_standard">
+                <label for="broetchen_special">Spießbraten Spezial:</label>  <input type="text" id="broetchen_special" name="broetchen_special">
+                <label for="apfelkompott">Anzahl Apfelkompott:</label>  <input type="text" id="apfelkompott" name="apfelkompott">
+                <label for="bemerkung">Bemerkung:</label>  <input type="text" id="bemerkung" name="bemerkung"><br>
+                <button type="submit" class="btn btn-dark">weiter</button>
+            </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

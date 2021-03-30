@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block nav %}
+
+{% endblock %}
+
+{% block content %}
+Hier entsteht eine Website zur Vorbestellung von Reibekuchen und Spießbratenbrötchen bei Brigitte
+
+<div class="container">
+  <div class="row">
+      <div class="col-sm-6">
+          <div class="jumbotron">
+            <h1>Eifler Riefkoche (Reibekuchen)</h1>
+            <a href="{% url 'order:step1' %}?p=10">Bestellen</a>
+          </div>
+      </div>
+      <div class="col-sm-6">
+          <div class="jumbotron">
+            <h1>Spießbraten-Brötchen</h1>
+            <a href="{% url 'order:step1' %}?p=20">Bestellen</a>
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

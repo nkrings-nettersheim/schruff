@@ -1,0 +1,105 @@
+from datetime import datetime
+
+from django.shortcuts import render
+from django.http import HttpResponse
+
+from .models import Order_days, Order_times
+
+
+def index(request):
+    return render(request, 'order/index.html', )
+
+
+def step1(request):
+    p = request.GET['p']
+    order_days = ''
+    if p == '10':
+        product_long = 'Reibekuchen'
+        order_days = Order_days.objects.filter(reibekuchen=True, order_day__gt=datetime.now()).order_by('order_day')
+    elif p == '20':
+        product_long = 'Spießbratenbrötchen'
+        order_days = Order_days.objects.filter(spiessbraten=True, order_day__gt=datetime.now()).order_by('order_day')
+    else:
+        product_long = 'unbekannt'
+
+    request.session['product_id'] = p
+    request.session['product_long'] = product_long
+
+    return render(request, 'order/step1.html', {'order': request.session, 'days': order_days})
+
+def step2(request):
+    day = request.POST['bestelltag']
+    request.session['order_day'] = day
+    product_id = request.session['product_id']
+    day = request.session['order_day']
+    day_list = day.split('-')
+    day_string = day_list[2] + "." + day_list[1] + "." + day_list[0]
+    if product_id == '10':
+        target_page = 'order/product1.html'
+    elif product_id == '20':
+        target_page = 'order/product2.html'
+    else:
+        target_page = 'error.html'
+
+    return render(request, target_page, {'order': request.session, 'day': day_string})
+
+
+def collectiontime(request):
+    if request.method == "POST":
+        if request.session['product_id'] == '10':
+            request.session['reibekuchen_count'] = request.POST['reibekuchen_count']
+            request.session['apfelkompott'] = request.POST['apfelkompott']
+            request.session['lachs'] = request.POST['lachs']
+            request.session['bemerkung'] = request.POST['bemerkung']
+            collectiontime_list = Order_times.objects.filter(booked=False)
+            return render(request, 'order/collectiontime.html', {'session': request.session, 'times': collectiontime_list})
+
+        elif request.session['product_id'] == '20':
+            request.session['broetchen_standard'] = request.POST['broetchen_standard']
+            request.session['broetchen_special'] = request.POST['broetchen_special']
+            request.session['apfelkompott'] = request.POST['apfelkompott']
+            request.session['bemerkung'] = request.POST['bemerkung']
+            collectiontime_list = Order_times.objects.filter(booked=False)
+            return render(request, 'order/collectiontime.html', {'session': request.session, 'times': collectiontime_list})
+
+        else:
+            pass
+    else:
+        pass
+
+
+def customer(request):
+    if request.method == "POST":
+        if request.session['product'] == 'Reibekuchen':
+            request.session['bestelltag'] = request.POST['bestelltag']
+            return render(request, 'order/customer.html', {'session': request.session})
+        else:
+            pass
+    else:
+        pass
+
+
+def complete(request):
+    if request.method == "POST":
+        if request.session['product'] == 'Reibekuchen':
+            request.session['customer_name'] = request.POST['customer_name']
+            request.session['callnumber'] = request.POST['callnumber']
+            request.session['email'] = request.POST['email']
+            return render(request, 'order/complete.html', {'session': request.session})
+        else:
+            pass
+    else:
+        pass
+
+
+def thanks(request):
+    if request.method == "POST":
+        if request.session['product'] == 'Reibekuchen':
+            #sending an email to the customer
+            #sending an email to the sales part
+            #save everything in the database
+            #session schließen
+            return render(request, 'order/thanks.html', {'session': request.session})
+
+
+

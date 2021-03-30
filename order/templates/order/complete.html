@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block nav %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+      <div class="col-sm-6">
+          <div class="jumbotron">
+            <h1>Aktueller Stand:</h1>
+            <p>Sie bestellen {{ session.product }} für den {{ session.order_day }}</p>
+            <form action="{% url 'order:thanks' %}" method="post">
+                {% csrf_token %}
+                <br>
+                <button type="submit" class="btn btn-dark">Zahlungspflichtig bestellen</button>
+            </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

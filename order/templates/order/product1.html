@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block nav %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+      <div class="col-sm-6">
+          <div class="jumbotron">
+            <h1>Aktueller Stand:</h1>
+            <p>Sie bestellen {{ order.product_long }} für den {{ day }}</p>
+            <form action="{% url 'order:collectiontime' %}" method="post">
+                {% csrf_token %}
+                <label for="reibekuchen_count">Anzahl Reibekuchen:</label>  <input type="text" id="reibekuchen_count" name="reibekuchen_count"><br>
+                <label for="apfelkompott">Anzahl Apfelkompott:</label>  <input type="text" id="apfelkompott" name="apfelkompott"><br>
+                <label for="lachs">Anzahl Lachs:</label>  <input type="text" id="lachs" name="lachs"><br>
+                <label for="bemerkung">Bemerkung:</label>  <input type="text" id="bemerkung" name="bemerkung">
+                <br>
+                <button type="submit" class="btn btn-dark">weiter</button>
+            </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

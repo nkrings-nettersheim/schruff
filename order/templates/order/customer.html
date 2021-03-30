@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+
+{% block nav %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+      <div class="col-sm-6">
+          <div class="jumbotron">
+            <h1>Aktueller Stand:</h1>
+            <p>Sie bestellen {{ session.product }} für den {{ session.order_day }}</p>
+            <form action="{% url 'order:complete' %}" method="post">
+                {% csrf_token %}
+                <label for="customer_name">Dein Name:</label><input type="text" name="customer_name" id="customer_name"><br>
+                <label for="callnumber">Dein Rückrufnummer:</label><input type="text" name="callnumber" id="callnumber">
+                <label for="email">Deine E-Mail:</label><input type="text" name="email" id="email">
+                <br>
+                <button type="submit" class="btn btn-dark">weiter</button>
+            </form>
+          </div>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

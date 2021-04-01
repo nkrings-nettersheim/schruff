@@ -9,23 +9,64 @@
 
 {% block content %}
 
+
 <div class="container">
-  <div class="row">
-      <div class="col-sm-6">
-          <div class="jumbotron">
-            <h1>Aktueller Stand:</h1>
-            <p>Sie bestellen {{ order.product_long }} für den {{ day }}</p>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+      <div class="col-sm-12">
             <form action="{% url 'order:collectiontime' %}" method="post">
-                {% csrf_token %}
-                <label for="broetchen_standard">Spießbraten Standard:</label>  <input type="text" id="broetchen_standard" name="broetchen_standard">
-                <label for="broetchen_special">Spießbraten Spezial:</label>  <input type="text" id="broetchen_special" name="broetchen_special">
-                <label for="apfelkompott">Anzahl Apfelkompott:</label>  <input type="text" id="apfelkompott" name="apfelkompott">
-                <label for="bemerkung">Bemerkung:</label>  <input type="text" id="bemerkung" name="bemerkung"><br>
-                <button type="submit" class="btn btn-dark">weiter</button>
+            {% csrf_token %}
+              <div class="row"><h1 class="text-center">Aktueller Stand:</h1></div>
+                <div class="row">
+                    <p class="text-center">Du bestellst {{ order.product_long }} für den {{ day }}:</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <label for="broetchen_standard">Spießbraten Standard:</label>
+                            <input class="form-control-sm" type="text" id="broetchen_standard" name="broetchen_standard">
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <label for="broetchen_special">Spießbraten Spezial:</label>
+                            <input class="form-control-sm" type="text" id="broetchen_special" name="broetchen_special">
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <label for="apfelkompott">Anzahl Apfelkompott:</label>
+                            <input class="form-control-sm" type="text" id="apfelkompott" name="apfelkompott">
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <label for="bemerkung">Bemerkung/Besondere Wünsche:</label><br>
+                            <input class="form-control" type="text"  id="bemerkung" name="bemerkung">
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-10"><center><button type="submit" class="btn btn-primary">weiter</button></center></div>
+                    <div class="col-1"></div>
+                </div>
             </form>
-          </div>
       </div>
-  </div>
+    </div>
+    <div class="row">&nbsp;</div>
 </div>
+
 
 {% endblock %}

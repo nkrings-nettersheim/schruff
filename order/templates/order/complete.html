@@ -2,7 +2,6 @@
 
 {% load static %}
 
-
 {% block nav %}
 
 {% endblock %}
@@ -10,19 +9,61 @@
 {% block content %}
 
 <div class="container">
-  <div class="row">
-      <div class="col-sm-6">
-          <div class="jumbotron">
-            <h1>Aktueller Stand:</h1>
-            <p>Sie bestellen {{ session.product }} für den {{ session.order_day }}</p>
-            <form action="{% url 'order:thanks' %}" method="post">
-                {% csrf_token %}
+    <div class="row">&nbsp;</div>
+    <div class="row">
+      <div class="col-sm-12">
+        <form action="{% url 'order:thanks' %}" method="post">
+            {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-2">&nbsp:</div>
+                    <div class="col-8 text-center">
+                        <h1>Zusammenfassung:</h1>
+                    </div>
+                    <div class="col-2">&nbsp:</div>
+                </div>
+                <div class="row">
+                    <div class="col-2">&nbsp:</div>
+                    <div class="col-8 text-center">
+                        <p>Das möchtest du bestellen:</p>
+                    </div>
+                    <div class="col-2">&nbsp:</div>
+                </div>
+                <div class="row">
+                    <div class="col-3">&nbsp;</div>
+                    <div class="col-md-3 text-right">{{ order.reibekuchen_count }}</div>
+                    <div class="col-4 text-left">{{ order.product_long }}</div>
+                    <div class="col-2">&nbsp;</div>
+                </div>
+                <div class="row">
+                    <div class="col-3">&nbsp;</div>
+                    <div class="col-3 text-right">{{ order.apfelkompott }}</div>
+                    <div class="col-4 text-left">Apfelkompott</div>
+                    <div class="col-2">&nbsp;</div>
+                </div>
+                <div class="row">
+                    <div class="col-3">&nbsp;</div>
+                    <div class="col-3 text-right">{{ order.lachs }}</div>
+                    <div class="col-4 text-left">mal Lachs</div>
+                    <div class="col-2">&nbsp;</div>
+                </div>
+                <div class="row">
+                    <div class="col-2">&nbsp;</div>
+                    <div class="col-4"><span class="float-right">Bemerkung/Wünsche:</span></div>
+                    <div class="col-4 text-left">{{ order.bemerkung }}</div>
+                    <div class="col-2">&nbsp;</div>
+                </div>
                 <br>
-                <button type="submit" class="btn btn-dark">Zahlungspflichtig bestellen</button>
-            </form>
-          </div>
+
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-10"><center><button type="submit" class="btn btn-primary">Zahlungspflichtig bestellen</button></center></div>
+                    <div class="col-1"></div>
+                </div>
+        </form>
       </div>
-  </div>
+    </div>
+    <div class="row">&nbsp;</div>
 </div>
 
 {% endblock %}

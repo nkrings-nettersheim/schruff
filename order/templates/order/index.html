@@ -8,20 +8,22 @@
 {% endblock %}
 
 {% block content %}
-Hier entsteht eine Website zur Vorbestellung von Reibekuchen und Spießbratenbrötchen bei Brigitte
 
 <div class="container">
   <div class="row">
       <div class="col-sm-6">
           <div class="jumbotron">
-            <h1>Eifler Riefkoche (Reibekuchen)</h1>
-            <a href="{% url 'order:step1' %}?p=10">Bestellen</a>
+
+            <h1 class="text-center">Eifler Riefkoche (Reibekuchen)</h1>
+            <p class="text-center">"Mittwochs is Rievekochedaach!!!"</p>
+            <center><a href="{% url 'order:step1' %}?p=10">Bestellen</a></center>
           </div>
       </div>
       <div class="col-sm-6">
           <div class="jumbotron">
-            <h1>Spießbraten-Brötchen</h1>
-            <a href="{% url 'order:step1' %}?p=20">Bestellen</a>
+            <h1 class="text-center">Spießbraten-Brötchen</h1>
+            <p class="text-center">"Un Friedachs jit et Spießbrodebrütcher"</p>
+            <center><a class="text-center"href="{% url 'order:step1' %}?p=20">Bestellen</a></center>
           </div>
       </div>
   </div>

@@ -10,24 +10,36 @@
 {% block content %}
 
 <div class="container">
-  <div class="row">
-      <div class="col-sm-6">
-          <div class="jumbotron">
-            <h1>Termin auswählen:</h1>
-            <p>Sie bestellen {{order.product_long}} </p>
-
-            <form action="{% url 'order:step2' %}" method="post">
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-sm-12">
+        <form action="{% url 'order:step2' %}" method="post">
             {% csrf_token %}
-            <select id="bestelltag" name="bestelltag">
-            {% for day in days %}
-                <option value="{{ day }}">{{ day.order_day|date:"d.m.Y" }}</option>
-            {% endfor %}
-            </select>
-            <button type="submit" class="btn btn-dark">weiter</button>
+
+            <div class="row">
+                <div class="col text-center"><h1>Termin auswählen:</h1></div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <p>Du bestellst {{order.product_long}} für den: </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <select id="bestelltag" name="bestelltag">
+                    {% for day in days %}
+                        <option value="{{ day }}">{{ day.order_day|date:"d.m.Y" }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col text-center"><button type="submit" class="btn btn-primary">weiter</button></div>
+            </div>
           </form>
-         </div>
-      </div>
-  </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

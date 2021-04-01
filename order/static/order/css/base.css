@@ -26,3 +26,38 @@ footer {
 .jumbotron {
     background-color: #96bb7c!important;
 }
+
+@media screen and (max-width: 575px){
+
+    h1 {
+        font-size: 20px;
+    }
+
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px){
+    h1 {
+        font-size: 22px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 991px){
+    h1 {
+        font-size: 22px;
+    }
+}
+
+@media screen and (min-width: 992px) and (max-width: 1140px){
+    h1 {
+        font-size: 24px;
+    }
+}
+
+@media screen and (min-width: 1141px) and (max-width: 1599px){
+
+}
+
+@media screen and (min-width: 1600px){
+
+}
+

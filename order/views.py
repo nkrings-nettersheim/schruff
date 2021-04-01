@@ -1,5 +1,5 @@
 import datetime
-
+#from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponse
 
@@ -15,10 +15,10 @@ def step1(request):
     order_days = ''
     if p == '10':
         product_long = 'Reibekuchen'
-        order_days = Order_days.objects.filter(reibekuchen=True, order_day__gt=datetime.now()).order_by('order_day')
+        order_days = Order_days.objects.filter(reibekuchen=True, order_day__gt=datetime.datetime.now()).order_by('order_day')
     elif p == '20':
         product_long = 'Spießbratenbrötchen'
-        order_days = Order_days.objects.filter(spiessbraten=True, order_day__gt=datetime.now()).order_by('order_day')
+        order_days = Order_days.objects.filter(spiessbraten=True, order_day__gt=datetime.datetime.now()).order_by('order_day')
     else:
         product_long = 'unbekannt'
 
@@ -30,18 +30,11 @@ def step1(request):
 def step2(request):
     day = request.POST['bestelltag']
     request.session['order_day'] = day
-    product_id = request.session['product_id']
     day = request.session['order_day']
     day_list = day.split('-')
     day_string = day_list[2] + "." + day_list[1] + "." + day_list[0]
     request.session['order_day_view'] = day_string
-    if product_id == '10':
-        target_page = 'order/product1.html'
-    elif product_id == '20':
-        target_page = 'order/product2.html'
-    else:
-        target_page = 'error.html'
-    return render(request, target_page, {'order': request.session})
+    return render(request, 'order/product.html', {'order': request.session})
 
 
 def collectiontime(request):
@@ -72,6 +65,10 @@ def collectiontime(request):
 def customer(request):
     if request.method == "POST":
         request.session['collectiontime'] = request.POST['collectiontime']
+        #request.session['collectiontime_vi'])
+        collectiontime_view = datetime.datetime.strptime(request.session['collectiontime'], '%Y-%m-%d %H:%M:%S')
+
+        #print(type(request.session['collectiontime']))
         return render(request, 'order/customer.html', {'order': request.session})
     else:
         pass
@@ -82,7 +79,10 @@ def complete(request):
         request.session['customer_name'] = request.POST['customer_name']
         request.session['callnumber'] = request.POST['callnumber']
         request.session['email'] = request.POST['email']
-        return render(request, 'order/complete.html', {'order': request.session})
+        print(request.session['collectiontime'])
+        collectiontime_view = datetime.datetime.strptime(request.session['collectiontime'], '%Y-%m-%d %H:%M:%S')
+        print(type(collectiontime_view))
+        return render(request, 'order/complete.html', {'order': request.session, 'collectiontime_view': collectiontime_view})
     else:
         pass
 
@@ -93,7 +93,8 @@ def thanks(request):
         #sending an email to the sales part
         #save everything in the database
         #session schließen
-        return render(request, 'order/thanks.html', {'order': request.session})
+        collectiontime_view = datetime.datetime.strptime(request.session['collectiontime'], '%Y-%m-%d %H:%M:%S')
+        return render(request, 'order/thanks.html', {'order': request.session, 'collectiontime_view': collectiontime_view})
     else:
         pass
 

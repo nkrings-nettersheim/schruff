@@ -16,49 +16,44 @@
             {% csrf_token %}
 
                 <div class="row">
-                    <div class="col-2">&nbsp:</div>
-                    <div class="col-8 text-center">
+                    <div class="col-12 text-center">
                         <h1>Zusammenfassung:</h1>
                     </div>
-                    <div class="col-2">&nbsp:</div>
                 </div>
                 <div class="row">
-                    <div class="col-2">&nbsp:</div>
-                    <div class="col-8 text-center">
+                    <div class="col-12 text-center">
                         <p>Das möchtest du bestellen:</p>
                     </div>
-                    <div class="col-2">&nbsp:</div>
                 </div>
                 <div class="row">
-                    <div class="col-3">&nbsp;</div>
-                    <div class="col-md-3 text-right">{{ order.reibekuchen_count }}</div>
-                    <div class="col-4 text-left">{{ order.product_long }}</div>
-                    <div class="col-2">&nbsp;</div>
+                    <div class="col-6 text-right">{{order.product_long}}:</div>
+                    <div class="col-6 text-left">{{ order.reibekuchen_count }} Stück</div>
                 </div>
                 <div class="row">
-                    <div class="col-3">&nbsp;</div>
-                    <div class="col-3 text-right">{{ order.apfelkompott }}</div>
-                    <div class="col-4 text-left">Apfelkompott</div>
-                    <div class="col-2">&nbsp;</div>
+                    <div class="col-6 text-right">Apfelkompott:</div>
+                    <div class="col-6 text-left">{{ order.apfelkompott }} mal</div>
                 </div>
                 <div class="row">
-                    <div class="col-3">&nbsp;</div>
-                    <div class="col-3 text-right">{{ order.lachs }}</div>
-                    <div class="col-4 text-left">mal Lachs</div>
-                    <div class="col-2">&nbsp;</div>
+                    <div class="col-6 text-right">Lachs:</div>
+                    <div class="col-6 text-left">{{ order.lachs }} mal </div>
                 </div>
                 <div class="row">
-                    <div class="col-2">&nbsp;</div>
-                    <div class="col-4"><span class="float-right">Bemerkung/Wünsche:</span></div>
-                    <div class="col-4 text-left">{{ order.bemerkung }}</div>
-                    <div class="col-2">&nbsp;</div>
+                    <div class="col-6 text-right">Zusatz-Wünsche:</div>
+                    <div class="col-6 text-left">{{ order.bemerkung }}</div>
                 </div>
                 <br>
-
                 <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col-10"><center><button type="submit" class="btn btn-primary">Zahlungspflichtig bestellen</button></center></div>
-                    <div class="col-1"></div>
+                    <div class="col-6 text-right">Abholung:</div>
+                    <div class="col-6 text-left">{{ order.order_day_view }} um {{ collectiontime_view|date:'H:i' }}</div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-6 text-right">Falls was ist melden wir uns bei:</div>
+                    <div class="col-6 text-left">{{ order.customer_name }} unter Tel.: {{ order.callnumber }} <br>oder E-Mail: {{ order.email }}</div>
+                </div>
+                <br>
+                <div class="row">
+                     <div class="col-12"><center><button type="submit" class="btn btn-primary">Zahlungspflichtig bestellen</button></center></div>
                 </div>
         </form>
       </div>

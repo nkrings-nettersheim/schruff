@@ -10,22 +10,57 @@
 {% block content %}
 
 <div class="container">
-  <div class="row">
-      <div class="col-sm-6">
-          <div class="jumbotron">
-            <h1>Aktueller Stand:</h1>
-            <p>Sie bestellen {{ session.product }} für den {{ session.order_day }}</p>
-            <form action="{% url 'order:complete' %}" method="post">
-                {% csrf_token %}
-                <label for="customer_name">Dein Name:</label><input type="text" name="customer_name" id="customer_name"><br>
-                <label for="callnumber">Dein Rückrufnummer:</label><input type="text" name="callnumber" id="callnumber">
-                <label for="email">Deine E-Mail:</label><input type="text" name="email" id="email">
-                <br>
-                <button type="submit" class="btn btn-dark">weiter</button>
-            </form>
-          </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+      <div class="col-sm-12">
+        <form action="{% url 'order:complete' %}" method="post">
+            {% csrf_token %}
+              <div class="row">
+                <div class="col text-center">
+                    <h1 class="text-center">Aktueller Stand:</h1>
+                </div>
+              </div>
+                <div class="row">
+                  <div class="col text-center">
+                    <p class="text-center">Du bestellst {{ order.product_long }} für den {{ order.order_day_view }}</p>
+                    <p class="text-center">Jetzt noch schnell deinen Namen und deine Kontaktdaten (falls was ist):</p>
+                  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <label for="customer_name">Dein Name:</label><br>
+                            <input class="form-control-sm" type="text" name="customer_name" id="customer_name">
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <label for="callnumber">Dein Rückrufnummer:</label><br>
+                            <input class="form-control-sm" type="text" name="callnumber" id="callnumber">
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <label for="email">Deine E-Mail:</label><br>
+                            <input class="form-control-sm" type="text" name="email" id="email">
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-10"><center><button type="submit" class="btn btn-primary">weiter</button></center></div>
+                    <div class="col-1"></div>
+                </div>
+        </form>
       </div>
-  </div>
+    </div>
+    <div class="row">&nbsp;</div>
 </div>
 
 {% endblock %}

@@ -5,12 +5,12 @@ body {
   min-height: 100vh;
   margin: auto;
   padding: 0 1rem;
-  color: white;
-  background-color: #131313;
+  color: #184d47;
+  background-color: #96bb7c;
 }
 
 a {
-  color: #ffd560;
+  color: #c64756;
 }
 
 header,
@@ -21,4 +21,8 @@ footer {
 footer {
   margin-top: auto;
   padding: 3rem 0 1rem;
+}
+
+.jumbotron {
+    background-color: #96bb7c!important;
 }

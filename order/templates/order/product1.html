@@ -10,23 +10,65 @@
 {% block content %}
 
 <div class="container">
-  <div class="row">
-      <div class="col-sm-6">
-          <div class="jumbotron">
-            <h1>Aktueller Stand:</h1>
-            <p>Sie bestellen {{ order.product_long }} für den {{ day }}</p>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+      <div class="col-sm-12">
             <form action="{% url 'order:collectiontime' %}" method="post">
-                {% csrf_token %}
-                <label for="reibekuchen_count">Anzahl Reibekuchen:</label>  <input type="text" id="reibekuchen_count" name="reibekuchen_count"><br>
-                <label for="apfelkompott">Anzahl Apfelkompott:</label>  <input type="text" id="apfelkompott" name="apfelkompott"><br>
-                <label for="lachs">Anzahl Lachs:</label>  <input type="text" id="lachs" name="lachs"><br>
-                <label for="bemerkung">Bemerkung:</label>  <input type="text" id="bemerkung" name="bemerkung">
+            {% csrf_token %}
+            <div class="row">
+              <div class="col text-center"><h1 class="text-center">Aktueller Stand:</h1></div>
+            </div>
+            <div class="row">
+                <div class="col text-center">
+                    <p class="text-center">Du bestellst {{ order.product_long }} für den {{ order.order_day_view }}</p>
+                </div>
+            </div>
+
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <label for="reibekuchen_count">Wieviel Reibekuchen sollen es den sein?:</label><br>
+                            <input class="form-control-sm" type="text" size="10" id="reibekuchen_count" name="reibekuchen_count">
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <label for="apfelkompott">Wieviel Portionen Affelkompott?:</label><br>
+                            <input class="form-control-sm" type="text" size="10" id="apfelkompott" name="apfelkompott">
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <label for="lachs">Anzahl Portionen Lachs:</label><br>
+                            <input class="form-control-sm" type="text" size="10" id="lachs" name="lachs">
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <label for="bemerkung">Bemerkung/Besondere Wünsche:</label><br>
+                            <input class="form-control" type="text"  id="bemerkung" name="bemerkung">
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
                 <br>
-                <button type="submit" class="btn btn-dark">weiter</button>
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-10"><center><button type="submit" class="btn btn-primary">weiter</button></center></div>
+                    <div class="col-1"></div>
+                </div>
             </form>
-          </div>
       </div>
-  </div>
+    </div>
+    <div class="row">&nbsp;</div>
 </div>
 
 {% endblock %}

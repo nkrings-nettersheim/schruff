@@ -10,15 +10,19 @@
 {% block content %}
 
 <div class="container">
-  <div class="row">
-      <div class="col-sm-6">
-          <div class="jumbotron">
-            <h1>Aktueller Stand:</h1>
-            <p>Sie bestellten {{ session.product }} für den {{ session.order_day }}</p>
-            <p>Vielen Dank</p>
-          </div>
-      </div>
-  </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-2">&nbsp;</div>
+          <div class="col-8 text-center"><h1>Vielen Dank für deine Bestellung!</h1></div>
+        <div class="col-2">&nbsp;</div>
+    </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-2">&nbsp;</div>
+          <div class="col-8 text-center">Wir sehen uns am {{ order.order_day }} um {{ order.collectiontime }}</div>
+        <div class="col-2">&nbsp;</div>
+    </div>
+
 </div>
 
 {% endblock %}

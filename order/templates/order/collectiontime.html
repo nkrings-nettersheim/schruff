@@ -10,24 +10,44 @@
 {% block content %}
 
 <div class="container">
-  <div class="row">
-      <div class="col-sm-6">
-          <div class="jumbotron">
-            <h1>Aktueller Stand:</h1>
-            <p>Sie bestellen {{ session.product }} für den {{ session.order_day }}</p>
-            <form action="{% url 'order:customer' %}" method="post">
-                {% csrf_token %}
-                <select id="bestelltag" name="bestelltag">
-                {% for time in times %}
-                    <option value="{{ time }}">{{ time }}</option>
-                {% endfor %}
-                </select>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+      <div class="col-sm-12">
+        <form action="{% url 'order:customer' %}" method="post">
+            {% csrf_token %}
+              <div class="row">
+                  <div class="col text-center">
+                    <h1 class="text-center">Aktueller Stand:</h1>
+                  </div>
+              </div>
+                <div class="row">
+                  <div class="col text-center">
+                    <p class="text-center">Du bestellst {{ order.product_long }} für den {{ order.order_day_view }}</p>
+                    <p class="text-center">Wähle bitte aus der Liste eine freie Abholzeit die auch für Dich passt:</p>
+                  </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-1">&nbsp;</div>
+                        <div class="col-10 form-group text-center">
+                            <select id="collectiontime" name="collectiontime">
+                            {% for time in times %}
+                                <option value="{{ time }}">{{ time.order_time|time:"H:i" }}</option>
+                            {% endfor %}
+                            </select>
+                        </div>
+                    <div class="col-1">&nbsp;</div>
+                </div>
                 <br>
-                <button type="submit" class="btn btn-dark">weiter</button>
-            </form>
-          </div>
+                <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-10"><center><button type="submit" class="btn btn-primary">weiter</button></center></div>
+                    <div class="col-1"></div>
+                </div>
+        </form>
       </div>
-  </div>
+    </div>
+    <div class="row">&nbsp;</div>
 </div>
 
 {% endblock %}

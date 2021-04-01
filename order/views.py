@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime
 
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -34,14 +34,14 @@ def step2(request):
     day = request.session['order_day']
     day_list = day.split('-')
     day_string = day_list[2] + "." + day_list[1] + "." + day_list[0]
+    request.session['order_day_view'] = day_string
     if product_id == '10':
         target_page = 'order/product1.html'
     elif product_id == '20':
         target_page = 'order/product2.html'
     else:
         target_page = 'error.html'
-
-    return render(request, target_page, {'order': request.session, 'day': day_string})
+    return render(request, target_page, {'order': request.session})
 
 
 def collectiontime(request):
@@ -51,8 +51,9 @@ def collectiontime(request):
             request.session['apfelkompott'] = request.POST['apfelkompott']
             request.session['lachs'] = request.POST['lachs']
             request.session['bemerkung'] = request.POST['bemerkung']
-            collectiontime_list = Order_times.objects.filter(booked=False)
-            return render(request, 'order/collectiontime.html', {'session': request.session, 'times': collectiontime_list})
+            order_day = request.session['order_day'].split("-")
+            collectiontime_list = Order_times.objects.filter(order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])), booked=False)
+            return render(request, 'order/collectiontime.html', {'order': request.session, 'times': collectiontime_list})
 
         elif request.session['product_id'] == '20':
             request.session['broetchen_standard'] = request.POST['broetchen_standard']
@@ -60,7 +61,7 @@ def collectiontime(request):
             request.session['apfelkompott'] = request.POST['apfelkompott']
             request.session['bemerkung'] = request.POST['bemerkung']
             collectiontime_list = Order_times.objects.filter(booked=False)
-            return render(request, 'order/collectiontime.html', {'session': request.session, 'times': collectiontime_list})
+            return render(request, 'order/collectiontime.html', {'order': request.session, 'times': collectiontime_list})
 
         else:
             pass
@@ -70,36 +71,31 @@ def collectiontime(request):
 
 def customer(request):
     if request.method == "POST":
-        if request.session['product'] == 'Reibekuchen':
-            request.session['bestelltag'] = request.POST['bestelltag']
-            return render(request, 'order/customer.html', {'session': request.session})
-        else:
-            pass
+        request.session['collectiontime'] = request.POST['collectiontime']
+        return render(request, 'order/customer.html', {'order': request.session})
     else:
         pass
 
 
 def complete(request):
     if request.method == "POST":
-        if request.session['product'] == 'Reibekuchen':
-            request.session['customer_name'] = request.POST['customer_name']
-            request.session['callnumber'] = request.POST['callnumber']
-            request.session['email'] = request.POST['email']
-            return render(request, 'order/complete.html', {'session': request.session})
-        else:
-            pass
+        request.session['customer_name'] = request.POST['customer_name']
+        request.session['callnumber'] = request.POST['callnumber']
+        request.session['email'] = request.POST['email']
+        return render(request, 'order/complete.html', {'order': request.session})
     else:
         pass
 
 
 def thanks(request):
     if request.method == "POST":
-        if request.session['product'] == 'Reibekuchen':
-            #sending an email to the customer
-            #sending an email to the sales part
-            #save everything in the database
-            #session schließen
-            return render(request, 'order/thanks.html', {'session': request.session})
+        #sending an email to the customer
+        #sending an email to the sales part
+        #save everything in the database
+        #session schließen
+        return render(request, 'order/thanks.html', {'order': request.session})
+    else:
+        pass
 
 
 

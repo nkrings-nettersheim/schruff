@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container container_extend">
     <div class="row">&nbsp;</div>
     <div class="row">
       <div class="col-sm-12">
@@ -28,21 +28,20 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-1">&nbsp;</div>
-                        <div class="col-10 form-group text-center">
-                            <select id="collectiontime" name="collectiontime">
+                        <div class="col-12 form-group text-center">
+                            <select id="collectiontime" class="form-control-sm" name="collectiontime">
                             {% for time in times %}
                                 <option value="{{ time }}">{{ time.order_time|time:"H:i" }}</option>
                             {% endfor %}
                             </select>
                         </div>
-                    <div class="col-1">&nbsp;</div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col-10"><center><button type="submit" class="btn btn-primary">weiter</button></center></div>
-                    <div class="col-1"></div>
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn btn-secondary" onclick="history.go(-1)">zurück</button>
+                        <button type="submit" class="btn btn-secondary">weiter</button>
+                    </div>
                 </div>
         </form>
       </div>

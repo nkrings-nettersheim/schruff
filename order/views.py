@@ -10,6 +10,14 @@ def index(request):
     return render(request, 'order/index.html', )
 
 
+def impressum(request):
+    return render(request, 'order/impressum.html', )
+
+
+def datenschutz(request):
+    return render(request, 'order/datenschutz.html', )
+
+
 def step1(request):
     p = request.GET['p']
     order_days = ''

@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container container_extend">
     <div class="row">&nbsp;</div>
     <div class="row">
       <div class="col-sm-12">
@@ -26,36 +26,29 @@
                     <p class="text-center">Jetzt noch schnell deinen Namen und deine Kontaktdaten (falls was ist):</p>
                   </div>
                 </div>
-
                 <div class="row">
-                    <div class="col-1">&nbsp;</div>
-                        <div class="col-10 form-group text-center">
-                            <label for="customer_name">Dein Name:</label><br>
-                            <input class="form-control-sm" type="text" name="customer_name" id="customer_name">
-                        </div>
-                    <div class="col-1">&nbsp;</div>
-                </div>
-
-                <div class="row">
-                    <div class="col-1">&nbsp;</div>
-                        <div class="col-10 form-group text-center">
-                            <label for="callnumber">Dein Rückrufnummer:</label><br>
-                            <input class="form-control-sm" type="text" name="callnumber" id="callnumber">
-                        </div>
-                    <div class="col-1">&nbsp;</div>
+                    <div class="col-12 form-group text-center">
+                        <label for="customer_name">Dein Name:</label><br>
+                        <input class="form-control-sm" type="text" name="customer_name" id="customer_name">
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-1">&nbsp;</div>
-                        <div class="col-10 form-group text-center">
-                            <label for="email">Deine E-Mail:</label><br>
-                            <input class="form-control-sm" type="text" name="email" id="email">
-                        </div>
-                    <div class="col-1">&nbsp;</div>
+                    <div class="col-12 form-group text-center">
+                        <label for="callnumber">Dein Rückrufnummer:</label><br>
+                        <input class="form-control-sm" type="text" name="callnumber" id="callnumber">
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-1"></div>
-                    <div class="col-10"><center><button type="submit" class="btn btn-primary">weiter</button></center></div>
-                    <div class="col-1"></div>
+                    <div class="col-12 form-group text-center">
+                        <label for="email">Deine E-Mail:</label><br>
+                        <input class="form-control-sm" type="text" name="email" id="email">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn btn-secondary" onclick="history.go(-1)">zurück</button>
+                        <button type="submit" class="btn btn-secondary">weiter</button>
+                    </div>
                 </div>
         </form>
       </div>

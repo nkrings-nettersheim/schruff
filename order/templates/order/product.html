@@ -9,14 +9,14 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container container_extend">
     <div class="row">&nbsp;</div>
     <div class="row">
       <div class="col-sm-12">
             <form action="{% url 'order:collectiontime' %}" method="post">
             {% csrf_token %}
             <div class="row">
-              <div class="col text-center"><h1 class="text-center">Was möchtest du denn haben?</h1></div>
+              <div class="col text-center"><h1 class="text-center">Was darf es denn sein?</h1></div>
             </div>
             <div class="row">
                 <div class="col text-center">
@@ -67,13 +67,16 @@
             {% endif %}
                 <div class="row">
                     <div class="col-12 form-group text-center">
-                        <label for="bemerkung">Bemerkung/Besondere Wünsche:</label><br>
+                        <label for="bemerkung">Bemerkung/Besondere Wünsche (z.B. Getränke):</label><br>
                         <input class="form-control" type="text"  id="bemerkung" name="bemerkung">
                     </div>
                 </div>
                 <br>
                 <div class="row">
-                    <div class="col-12"><center><button type="submit" class="btn btn-primary">weiter</button></center></div>
+                    <div class="col-12 text-center">
+                        <button type="button" class="btn btn-secondary" onclick="history.go(-1)">zurück</button>
+                        <button type="submit" class="btn btn-secondary">weiter</button>
+                    </div>
                 </div>
             </form>
       </div>

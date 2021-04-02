@@ -8,7 +8,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container container_extend">
     <div class="row">&nbsp;</div>
     <div class="row">
       <div class="col-sm-12">
@@ -53,7 +53,10 @@
                 </div>
                 <br>
                 <div class="row">
-                     <div class="col-12"><center><button type="submit" class="btn btn-primary">Zahlungspflichtig bestellen</button></center></div>
+                     <div class="col-12 text-center">
+                         <button type="button" class="btn btn-secondary" onclick="history.go(-1)">zurück</button>
+                         <button type="submit" class="btn btn-primary">Zahlungspflichtig bestellen</button>
+                     </div>
                 </div>
         </form>
       </div>

@@ -6,6 +6,8 @@ app_name = 'order'
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('impressum/', views.impressum, name='impressum'),
+    path('datenschutz/', views.datenschutz, name='datenschutz'),
     path('step1/', views.step1, name='step1'),
     path('step2/', views.step2, name='step2'),
     path('product1/', views.step2, name='product1'),

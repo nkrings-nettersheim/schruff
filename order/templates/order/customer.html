@@ -28,20 +28,23 @@
                 </div>
                 <div class="row">
                     <div class="col-12 form-group text-center">
-                        <label for="customer_name">Dein Name:</label><br>
-                        <input class="form-control-sm" type="text" name="customer_name" id="customer_name">
+                        <label for="{{ form.customer_name.id_for_label }}">Dein Name:</label><br>
+                        {{ form.customer_name }}
+                        {{ form.customer_name.errors }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 form-group text-center">
-                        <label for="callnumber">Dein Rückrufnummer:</label><br>
-                        <input class="form-control-sm" type="text" name="callnumber" id="callnumber">
+                        <label for="{{ form.callnumber.id_for_label }}">Dein Rückrufnummer:</label><br>
+                        {{ form.callnumber }}
+                        {{ form.callnumber.errors }}
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 form-group text-center">
-                        <label for="email">Deine E-Mail:</label><br>
-                        <input class="form-control-sm" type="text" name="email" id="email">
+                        <label for="{{ form.email.id_for_label }}">Deine E-Mail:</label><br>
+                        {{ form.email }}
+                        {{ form.email.errors }}
                     </div>
                 </div>
                 <div class="row">

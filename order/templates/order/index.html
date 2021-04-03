@@ -13,16 +13,32 @@
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col text-center">
+            <h4>Hier kannst du Reibekuchen oder Spießbratenbröten <br>bei der
+            Gaststätte Schruff in Nettersheim vorbestellen.</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
+            <p>Einfach hier schnell Termin, Uhrzeit und Anzahl auswählen und schon ist die Bestellung aufgegeben. <br>
+                Die Bezahlung erfolgt in bar bei Abholung.<br>
+                Wir freuen uns auf Dich! <br>Dein Team der Gaststätte Schruff
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col text-center">
             <h1>Eifler Riefkoche (Reibekuchen)</h1>
             <p>"Mittwochs is Rievekochedaach!!!"</p>
-            <p><a class="btn btn-secondary" href="{% url 'order:step1' %}?p=10">Bestellen</a></p>
+            <p>Die Vorbestellung muss Dienstag Abend vorliegen.</p>
+            <p><a class="btn btn-secondary" href="{% url 'order:collectiondate' %}?p=10">Bestellen</a></p>
         </div>
         <br>
         <br>
         <div class="col text-center">
             <h1>Spießbraten-Brötchen</h1>
             <p>"Un Friedachs jit et Spießbrodebrütcher"</p>
-            <p><a class="btn btn-secondary" href="{% url 'order:step1' %}?p=20">Bestellen</a></p>
+            <p>Die Vorbestellung muss Donnerstag Abend vorliegen</p>
+            <p><a class="btn btn-secondary" href="{% url 'order:collectiondate' %}?p=20">Bestellen</a></p>
         </div>
     </div>
 </div>

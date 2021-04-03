@@ -21,7 +21,11 @@ class Order_times(models.Model):
 class Order(models.Model):
     name = models.CharField(max_length=100, blank=False)
     callnumber = models.CharField(max_length=25, blank=False)
-    order_time = models.DateTimeField()
+    email = models.CharField(max_length=75, blank=True)
+    order_day = models.DateField(default='1900-01-01')
+    order_time = models.DateTimeField(default='1900-01-01 00:00:00')
+    order_long = models.CharField(max_length=500, blank=True)
+    wishes = models.TextField(blank=True)
 
     def __str__(self):
         return self.name

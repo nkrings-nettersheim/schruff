@@ -25,22 +25,48 @@
                         <p>Das möchtest du bestellen:</p>
                     </div>
                 </div>
+            {% if order.reibekuchen_count %}
                 <div class="row">
                     <div class="col-6 text-right">{{order.product_long}}:</div>
                     <div class="col-6 text-left">{{ order.reibekuchen_count }} Stück</div>
                 </div>
+            {% endif %}
+            {% if order.broetchen_standard_count %}
+                <div class="row">
+                    <div class="col-6 text-right">Spießbraten Standard:</div>
+                    <div class="col-6 text-left">{{ order.broetchen_standard_count}} Stück</div>
+                </div>
+            {% endif %}
+            {% if order.broetchen_special_count %}
+                <div class="row">
+                    <div class="col-6 text-right">Spießbraten Spezial:</div>
+                    <div class="col-6 text-left">{{ order.broetchen_special_count }} Stück</div>
+                </div>
+            {% endif %}
+            {% if order.apfelkompott_count %}
                 <div class="row">
                     <div class="col-6 text-right">Apfelkompott:</div>
-                    <div class="col-6 text-left">{{ order.apfelkompott }} mal</div>
+                    <div class="col-6 text-left">{{ order.apfelkompott_count }} mal</div>
                 </div>
+            {% endif %}
+            {% if order.kartoffelsalat_count %}
+                <div class="row">
+                    <div class="col-6 text-right">Kartoffelsalat:</div>
+                    <div class="col-6 text-left">{{ order.kartoffelsalat_count }} mal</div>
+                </div>
+            {% endif %}
+            {% if order.lachs_count %}
                 <div class="row">
                     <div class="col-6 text-right">Lachs:</div>
-                    <div class="col-6 text-left">{{ order.lachs }} mal </div>
+                    <div class="col-6 text-left">{{ order.lachs_count }} mal </div>
                 </div>
+            {% endif %}
+            {% if order.wishes %}
                 <div class="row">
                     <div class="col-6 text-right">Zusatz-Wünsche:</div>
-                    <div class="col-6 text-left">{{ order.bemerkung }}</div>
+                    <div class="col-6 text-left">{{ order.wishes }}</div>
                 </div>
+            {% endif %}
                 <br>
                 <div class="row">
                     <div class="col-6 text-right">Abholung:</div>
@@ -50,6 +76,11 @@
                 <div class="row">
                     <div class="col-6 text-right">Falls was ist melden wir uns bei:</div>
                     <div class="col-6 text-left">{{ order.customer_name }} unter Tel.: {{ order.callnumber }} <br>oder E-Mail: {{ order.email }}</div>
+                </div>
+                <br>
+                <div class="row">
+                     <div class="col-12 text-center">Die Bezahlung erfolgt bei Abholung in bar an der Theke!
+                     </div>
                 </div>
                 <br>
                 <div class="row">

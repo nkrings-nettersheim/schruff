@@ -24,14 +24,24 @@ def datenschutz(request):
 def collectiondate(request):
     p = request.GET['p']
     order_days = ''
+    time_now = datetime.datetime.now().strftime('%H')
     if p == '10':
         product_long = 'Reibekuchen'
-        order_days = Order_days.objects.filter(reibekuchen=True, order_day__gt=datetime.datetime.now()).order_by('order_day')
+        if int(time_now) < settings.LOT_REIBEKUCHEN:
+            order_days = Order_days.objects.filter(reibekuchen=True, order_day__gte=datetime.datetime.now()).order_by('order_day')[:3]
+        else:
+            order_days = Order_days.objects.filter(reibekuchen=True, order_day__gt=datetime.datetime.now()).order_by(
+                'order_day')[:3]
+
     elif p == '20':
         product_long = 'Spießbratenbrötchen'
-        order_days = Order_days.objects.filter(spiessbraten=True, order_day__gt=datetime.datetime.now()).order_by('order_day')
+        if int(time_now) < settings.LOT_SPIESSBRATEN:
+            order_days = Order_days.objects.filter(spiessbraten=True, order_day__gte=datetime.datetime.now()).order_by('order_day')[:3]
+        else:
+            order_days = Order_days.objects.filter(spiessbraten=True, order_day__gt=datetime.datetime.now()).order_by('order_day')[:3]
+
     else:
-        product_long = 'unbekannt'
+        return render(request, 'order/index.html')
 
     request.session['product_id'] = p
     request.session['product_long'] = product_long
@@ -40,6 +50,7 @@ def collectiondate(request):
 
 def product(request):
     if request.session['product_id']:
+
         if request.method == "POST":
             day = request.POST['bestelltag']
             request.session['order_day'] = day
@@ -47,6 +58,12 @@ def product(request):
             day_list = day.split('-')
             day_string = day_list[2] + "." + day_list[1] + "." + day_list[0]
             request.session['order_day_view'] = day_string
+            request.session['EUR_REIBEKUCHEN'] = settings.EUR_REIBEKUCHEN
+            request.session['EUR_APFELKOMPOTT'] = settings.EUR_APFELKOMPOTT
+            request.session['EUR_LACHS'] = settings.EUR_LACHS
+            request.session['EUR_SPIESSBRATEN_STANDARD'] = settings.EUR_SPIESSBRATEN_STANDARD
+            request.session['EUR_SPIESSBRATEN_SPECIAL'] = settings.EUR_SPIESSBRATEN_SPECIAL
+            request.session['EUR_KARTOFFELSALAT'] = settings.EUR_KARTOFFELSALAT
             form = ProductsForm()
             return render(request, 'order/product.html', {'form': form, 'order': request.session})
         else:
@@ -105,6 +122,22 @@ def complete(request):
             request.session['callnumber'] = request.POST['callnumber']
             request.session['email'] = request.POST['email']
             collectiontime_view = datetime.datetime.strptime(request.session['collectiontime'], '%Y-%m-%d %H:%M:%S')
+            #to charge the price
+            price = 0.0
+            if ('reibekuchen_count' in request.session):
+                price = price + int(request.session['reibekuchen_count']) * float(request.session['EUR_REIBEKUCHEN'])
+            if ('apfelkompott_count' in request.session):
+                price = price + int(request.session['apfelkompott_count']) * float(request.session['EUR_APFELKOMPOTT'])
+            if ('lachs_count' in request.session):
+                price = price + int(request.session['lachs_count']) * float(request.session['EUR_LACHS'])
+            if ('broetchen_standard_count' in request.session):
+                price = price + int(request.session['broetchen_standard_count']) * float(request.session['EUR_SPIESSBRATEN_STANDARD'])
+            if ('broetchen_special_count' in request.session):
+                price = price + int(request.session['broetchen_special_count']) * float(request.session['EUR_SPIESSBRATEN_SPECIAL'])
+            if ('kartoffelsalat_count' in request.session):
+                price = price + int(request.session['kartoffelsalat_count']) * float(request.session['EUR_KARTOFFELSALAT'])
+
+            request.session['price'] = price
             return render(request, 'order/complete.html', {'order': request.session, 'collectiontime_view': collectiontime_view})
         else:
             return render(request, 'order/index.html')

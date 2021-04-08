@@ -1,0 +1,8 @@
+#
+# robots.txt for the website bheuser-songarchiv.de
+#
+
+User-agent: *
+Disallow: /admin/
+Disallow: /accounts/
+Disallow: /media/

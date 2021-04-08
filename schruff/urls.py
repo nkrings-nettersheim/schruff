@@ -16,9 +16,10 @@ Including another URLconf
 import debug_toolbar
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic import RedirectView
+from django.views.generic import RedirectView, TemplateView
 
 urlpatterns = [
+    path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path('', RedirectView.as_view(url='order/', permanent=True)),
     path('order/', include('order.urls')),
     path('admin/', admin.site.urls),

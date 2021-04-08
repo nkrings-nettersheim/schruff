@@ -1,3 +1,4 @@
+from ckeditor.fields import RichTextField
 from django.db import models
 
 class Order_days(models.Model):
@@ -39,3 +40,9 @@ class Order_details(models.Model):
         return self.product
 
 
+class Content_text(models.Model):
+    content_kurz = models.CharField(max_length=256, default='')
+    content_lang = RichTextField()
+
+    def __str__(self):
+        return self.content_kurz

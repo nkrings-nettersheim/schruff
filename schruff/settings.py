@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+from django.utils.translation import ugettext_lazy as _
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'order',
     'debug_toolbar',
+    'ckeditor',
+    'cookiebanner'
 ]
 
 MIDDLEWARE = [
@@ -128,6 +132,54 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
 
+COOKIEBANNER = {
+    "title": _("Cookie settings"),
+    "header_text": _("Diese Webseite nutzt Cookies. Einige davon sind für den ordnungsgemäßen Betrieb der Webseite erforderlich. "
+                     "Andere dienen lediglich statistischen Zwecken."),
+    "footer_text": _("Bitte hier akzeptieren:"),
+    "footer_links": [
+        {
+            "title": _("Impressum"),
+            "href": "/order/impressum"
+        },
+        {
+            "title": _("Datenschutz"),
+            "href": "/order/datenschutz"
+        },
+    ],
+    "groups": [
+        {
+            "id": "essential",
+            "name": _("Notwendige Cookies"),
+            "description": _("Diese sind für den Betrieb der Webseite technisch erforderlich."),
+            "cookies": [
+                {
+                    "pattern": "cookiebanner",
+                    "description": _("Damit dieses Fenster nach dem akzeptieren auch wieder verschwindet"),
+                },
+                {
+                    "pattern": "csrftoken",
+                    "description": _("Zum Schutz vor Cross-Site-Request-Forgery Angriffen."),
+                },
+                {
+                    "pattern": "sessionid",
+                    "description": _("Ohne dieses Cookie kann keine Bestellung durchgeführt werden."),
+                },
+            ],
+        },
+        {
+            "id": "analytics",
+            "name": _("Analytics"),
+            "optional": True,
+            "cookies": [
+                {
+                    "pattern": "_owa_.*",
+                    "description": _("Open Web Analytics Cookies zur Website Analysis. Weitere Information in der Datenschutzerklärung"),
+                },
+            ],
+        },
+    ],
+}
 
 # This must be the last part of the settings file
 

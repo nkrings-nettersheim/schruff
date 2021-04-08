@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 from .forms import ProductsForm, CustomerForm
-from .models import Order_days, Order_times, Order
+from .models import Order_days, Order_times, Order, Content_text
 
 
 def index(request):
@@ -14,11 +14,13 @@ def index(request):
 
 
 def impressum(request):
-    return render(request, 'order/impressum.html', )
+    content = Content_text.objects.get(content_kurz='Impressum')
+    return render(request, 'order/impressum.html', {'content': content})
 
 
 def datenschutz(request):
-    return render(request, 'order/datenschutz.html', )
+    content = Content_text.objects.get(content_kurz='Datenschutz')
+    return render(request, 'order/datenschutz.html',  {'content': content})
 
 
 def collectiondate(request):

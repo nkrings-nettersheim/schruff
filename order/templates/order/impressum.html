@@ -11,10 +11,8 @@
         <div class="row">
             <div class="col-sm">
                 <button type="button" class="btn btn-secondary" onclick="history.go(-1)">zurück</button>
-                Hier ist das Impressum
-                <br>
-                <br>
-                <br>
+                {{ content.content_lang | safe}}
+                <button type="button" class="btn btn-secondary" onclick="history.go(-1)">zurück</button>
             </div>
         </div>
     </div>

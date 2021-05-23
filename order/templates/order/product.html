@@ -26,7 +26,7 @@
             {% if order.product_id == '10' %}
                 <div class="row">
                     <div class="col-12 form-group text-center">
-                        <label for="{{ form.reibekuchen_count.id_for_label }}">Wieviel Reibekuchen sollen es den sein ({{ order.EUR_REIBEKUCHEN|floatformat:"2" }} €/St.)?:</label><br>
+                        <label for="{{ form.reibekuchen_count.id_for_label }}">Wieviel Einzel-Reibekuchen sollen es den sein ({{ order.EUR_REIBEKUCHEN|floatformat:"2" }} €/St.)?:</label><br>
                         {{ form.reibekuchen_count }}
                         {{ form.reibekuchen_count.errors }}
                     </div>
@@ -34,7 +34,7 @@
 
                 <div class="row">
                     <div class="col-12 form-group text-center">
-                        <label for="{{ form.apfelkompott_count.id_for_label }}">Wieviel Portionen Apfelkompott ({{ order.EUR_APFELKOMPOTT|floatformat:"2" }} €/Portion)?:</label><br>
+                        <label for="{{ form.apfelkompott_count.id_for_label }}">Portion Reibekuchen (3 Stück) inklusive Apfelkompott und Brot ({{ order.EUR_APFELKOMPOTT|floatformat:"2" }} €/Portion)?:</label><br>
                         {{ form.apfelkompott_count }}
                         {{ form.apfelkompott_count.errors }}
                     </div>
@@ -42,7 +42,7 @@
 
                 <div class="row">
                     <div class="col-12 form-group text-center">
-                        <label for="{{ form.lachs_count.id_for_label }}">Anzahl Portionen Lachs ({{ order.EUR_LACHS|floatformat:"2" }} €/Portion.)?:</label><br>
+                        <label for="{{ form.lachs_count.id_for_label }}">Portion Reibekuchen (3 Stück) inklusive Lachs, Brot und Meerrettich ({{ order.EUR_LACHS|floatformat:"2" }} €/Portion)?:</label><br>
                         {{ form.lachs_count }}
                         {{ form.lachs_count.errors }}
                     </div>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12 form-group text-center">
-                        <label for="{{ form.kartoffelsalat_count.id_for_label }}">Anzahl Kartoffelsalat ({{ order.EUR_SPIESSBRATEN_SPECIAL|floatformat:"2" }} €/Portion):</label><br>
+                        <label for="{{ form.kartoffelsalat_count.id_for_label }}">Anzahl Portion Kartoffelsalat ({{ order.EUR_KARTOFFELSALAT|floatformat:"2" }} €/Portion):</label><br>
                         {{ form.kartoffelsalat_count }}
                         {{ form.kartoffelsalat_count.errors }}
                     </div>

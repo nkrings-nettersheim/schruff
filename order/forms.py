@@ -59,7 +59,7 @@ class ProductsForm(forms.Form):
 
     wishes = forms.CharField(
         widget=forms.Textarea(
-            attrs={'rows': 5, 'cols': 30, 'placeholder': 'z.B. Getränke oder Sonderwünsche'}
+            attrs={'rows': 5, 'cols': 30}
         ),
         required=False)
 

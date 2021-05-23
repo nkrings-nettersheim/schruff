@@ -1,3 +1,5 @@
+import logging
+import os
 import datetime
 #from datetime import datetime
 from django.shortcuts import render, get_object_or_404
@@ -8,18 +10,37 @@ from django.core.mail import send_mail
 from .forms import ProductsForm, CustomerForm
 from .models import Order_days, Order_times, Order, Content_text
 
+BASE_DIR = settings.BASE_DIR
+
+logger = logging.getLogger(__name__)
+
 
 def index(request):
+    request.session['product_id'] = ''
+    request.session['product_long'] = ''
+    request.session['reibekuchen_count'] = ''
+    request.session['apfelkompott_count'] = ''
+    request.session['lachs_count'] = ''
+    request.session['wishes'] = ''
+    request.session['broetchen_standard_count'] = ''
+    request.session['broetchen_special_count'] = ''
+    request.session['kartoffelsalat_count'] = ''
+    request.session['customer_name'] = ''
+    request.session['callnumber'] = ''
+    request.session['email'] = ''
+    logger.info(f"Aufruf index.html")
     return render(request, 'order/index.html', )
 
 
 def impressum(request):
     content = Content_text.objects.get(content_kurz='Impressum')
+    logger.info(f"Aufruf impressum.html")
     return render(request, 'order/impressum.html', {'content': content})
 
 
 def datenschutz(request):
     content = Content_text.objects.get(content_kurz='Datenschutz')
+    logger.info(f"Aufruf datenschutz.html")
     return render(request, 'order/datenschutz.html',  {'content': content})
 
 
@@ -30,17 +51,17 @@ def collectiondate(request):
     if p == '10':
         product_long = 'Reibekuchen'
         if int(time_now) < settings.LOT_REIBEKUCHEN:
-            order_days = Order_days.objects.filter(reibekuchen=True, order_day__gte=datetime.datetime.now()).order_by('order_day')[:3]
+            order_days = Order_days.objects.filter(reibekuchen=True, order_day__gte=datetime.datetime.now()).order_by('order_day')[:2]
         else:
             order_days = Order_days.objects.filter(reibekuchen=True, order_day__gt=datetime.datetime.now()).order_by(
-                'order_day')[:3]
+                'order_day')[:2]
 
     elif p == '20':
         product_long = 'Spießbratenbrötchen'
         if int(time_now) < settings.LOT_SPIESSBRATEN:
-            order_days = Order_days.objects.filter(spiessbraten=True, order_day__gte=datetime.datetime.now()).order_by('order_day')[:3]
+            order_days = Order_days.objects.filter(spiessbraten=True, order_day__gte=datetime.datetime.now()).order_by('order_day')[:2]
         else:
-            order_days = Order_days.objects.filter(spiessbraten=True, order_day__gt=datetime.datetime.now()).order_by('order_day')[:3]
+            order_days = Order_days.objects.filter(spiessbraten=True, order_day__gt=datetime.datetime.now()).order_by('order_day')[:2]
 
     else:
         return render(request, 'order/index.html')
@@ -83,7 +104,7 @@ def collectiontime(request):
                 request.session['lachs_count'] = request.POST['lachs_count']
                 request.session['wishes'] = request.POST['wishes']
                 order_day = request.session['order_day'].split("-")
-                collectiontime_list = Order_times.objects.filter(order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])), booked=False)
+                collectiontime_list = Order_times.objects.filter(order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])), booked=False).order_by('order_time')
                 return render(request, 'order/collectiontime.html', {'order': request.session, 'times': collectiontime_list})
 
             elif request.session['product_id'] == '20':
@@ -92,7 +113,7 @@ def collectiontime(request):
                 request.session['kartoffelsalat_count'] = request.POST['kartoffelsalat_count']
                 request.session['wishes'] = request.POST['wishes']
                 order_day = request.session['order_day'].split("-")
-                collectiontime_list = Order_times.objects.filter(order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])), booked=False)
+                collectiontime_list = Order_times.objects.filter(order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])), booked=False).order_by('order_time')
                 return render(request, 'order/collectiontime.html', {'order': request.session, 'times': collectiontime_list})
 
             else:
@@ -179,7 +200,7 @@ Abholtag           : {request.session['order_day_view']}\n \
 Abholzeit          : {request.session['collectiontime']}\n\n \
 Bezahlt wird vor Ort an der Theke!\n\n \
 Vielen Dank für Deine Bestellung!!!\n\n \
-Gruß Dein Bestelltool")
+Gruß \Brigitte")
 
                 order_long_string = (f"Reibekuchen:{request.session['reibekuchen_count']};"
                                      f"Apfelkompott:{request.session['apfelkompott_count']};"
@@ -272,3 +293,49 @@ Gruß Dein Bestelltool")
 
 
 
+# **************************************************************************************************
+LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()
+logging.config.dictConfig({
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'console': {
+            'format': '%(name)-12s %(levelname)-8s %(message)s'
+        },
+        'file': {
+            'format': '%(asctime)s %(name)-23s %(levelname)-8s %(message)s'
+        }
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'console'
+        },
+        'file': {
+            'class': 'logging.handlers.RotatingFileHandler',
+            'formatter': 'file',
+            'filename': BASE_DIR + '/order.log',
+            'maxBytes': 1024*1024*1,
+            'backupCount': 10,
+        }
+    },
+    'loggers': {
+        '': {
+            'level': 'DEBUG',
+            'handlers': ['console']
+        },
+        'order': {
+            'level': 'INFO',
+            'handlers': ['console', 'file'],
+            'propagate': False,
+        },
+        'django.request': {
+            'level': 'DEBUG',
+            'handlers': ['console', 'file']
+        },
+        'django.security.*': {
+            'level': 'INFO',
+            'handlers': ['console', 'file']
+        }
+    }
+})

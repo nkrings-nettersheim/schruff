@@ -9,7 +9,7 @@ class ProductsForm(forms.Form):
         ),
         required=False,
         max_value=20,
-        min_value=1
+        min_value=0
     )
 
     apfelkompott_count = forms.IntegerField(
@@ -54,7 +54,7 @@ class ProductsForm(forms.Form):
         ),
         required=False,
         max_value=20,
-        min_value=1
+        min_value=0
     )
 
     wishes = forms.CharField(

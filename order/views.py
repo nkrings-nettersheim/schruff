@@ -16,18 +16,31 @@ logger = logging.getLogger(__name__)
 
 
 def index(request):
-    request.session['product_id'] = ''
-    request.session['product_long'] = ''
-    request.session['reibekuchen_count'] = ''
-    request.session['apfelkompott_count'] = ''
-    request.session['lachs_count'] = ''
-    request.session['wishes'] = ''
-    request.session['broetchen_standard_count'] = ''
-    request.session['broetchen_special_count'] = ''
-    request.session['kartoffelsalat_count'] = ''
-    request.session['customer_name'] = ''
-    request.session['callnumber'] = ''
-    request.session['email'] = ''
+    if 'priduct_id' in request.session:
+        del request.session['product_id']
+    if 'product_long' in request.session:
+        del request.session['product_long']
+    if 'reibekuchen_count' in request.session:
+        del request.session['reibekuchen_count']
+    if 'apfelkompott_count' in request.session:
+        del request.session['apfelkompott_count']
+    if 'lachs_count' in request.session:
+        del request.session['lachs_count']
+    if 'wishes' in request.session:
+        del request.session['wishes']
+    if 'broetchen_standard_count' in request.session:
+        del request.session['broetchen_standard_count']
+    if 'broetchen_special_count' in request.session:
+        del request.session['broetchen_special_count']
+    if 'kartoffelsalat_count' in request.session:
+        del request.session['kartoffelsalat_count']
+    if 'customer_name' in request.session:
+        del request.session['customer_name']
+    if 'callnumber' in request.session:
+        del request.session['callnumber']
+    if 'email' in request.session:
+        del request.session['email']
+
     logger.info(f"Aufruf index.html")
     return render(request, 'order/index.html', )
 
@@ -147,17 +160,18 @@ def complete(request):
             collectiontime_view = datetime.datetime.strptime(request.session['collectiontime'], '%Y-%m-%d %H:%M:%S')
             #to charge the price
             price = 0.0
-            if ('reibekuchen_count' in request.session):
-                price = price + int(request.session['reibekuchen_count']) * float(request.session['EUR_REIBEKUCHEN'])
-            if ('apfelkompott_count' in request.session):
+            #if ('reibekuchen_count' in request.session):
+            if 'reibekuchen_count' in request.session and request.session['reibekuchen_count'] != '':
+                    price = price + int(request.session['reibekuchen_count']) * float(request.session['EUR_REIBEKUCHEN'])
+            if 'apfelkompott_count' in request.session and request.session['apfelkompott_count'] != '':
                 price = price + int(request.session['apfelkompott_count']) * float(request.session['EUR_APFELKOMPOTT'])
-            if ('lachs_count' in request.session):
+            if 'lachs_count' in request.session and request.session['lachs_count'] != '':
                 price = price + int(request.session['lachs_count']) * float(request.session['EUR_LACHS'])
-            if ('broetchen_standard_count' in request.session):
+            if 'broetchen_standard_count' in request.session and request.session['broetchen_standard_count'] != '':
                 price = price + int(request.session['broetchen_standard_count']) * float(request.session['EUR_SPIESSBRATEN_STANDARD'])
-            if ('broetchen_special_count' in request.session):
+            if 'broetchen_special_count' in request.session and request.session['broetchen_special_count'] != '':
                 price = price + int(request.session['broetchen_special_count']) * float(request.session['EUR_SPIESSBRATEN_SPECIAL'])
-            if ('kartoffelsalat_count' in request.session):
+            if 'kartoffelsalat_count' in request.session and request.session['kartoffelsalat_count'] != '':
                 price = price + int(request.session['kartoffelsalat_count']) * float(request.session['EUR_KARTOFFELSALAT'])
 
             request.session['price'] = price

@@ -25,12 +25,6 @@
                         <p>Das möchtest du bestellen:</p>
                     </div>
                 </div>
-            {% if order.reibekuchen_count %}
-                <div class="row">
-                    <div class="col-6 text-right">{{order.product_long}}:</div>
-                    <div class="col-6 text-left">{{ order.reibekuchen_count }} Stück</div>
-                </div>
-            {% endif %}
             {% if order.broetchen_standard_count %}
                 <div class="row">
                     <div class="col-6 text-right">Spießbraten Standard:</div>
@@ -59,6 +53,12 @@
                 <div class="row">
                     <div class="col-6 text-right">Portion Reibekuchen (3 Stück) <br>mit Lachs, Meerrettich und Brot:</div>
                     <div class="col-6 text-left">{{ order.lachs_count }} mal </div>
+                </div>
+            {% endif %}
+            {% if order.reibekuchen_count %}
+                <div class="row">
+                    <div class="col-6 text-right">Einzelne Reibekuchen:</div>
+                    <div class="col-6 text-left">{{ order.reibekuchen_count }} Stück</div>
                 </div>
             {% endif %}
             {% if order.wishes %}

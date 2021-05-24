@@ -161,3 +161,4 @@ Thumbs.db #thumbnail cache on Windows
 
 #PyCharm
 .idea/
+/generate_days.py

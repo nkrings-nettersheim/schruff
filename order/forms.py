@@ -7,7 +7,7 @@ class ProductsForm(forms.Form):
         widget=forms.NumberInput(
             attrs={'class': 'form-control-sm'}
         ),
-        required=True,
+        required=False,
         max_value=20,
         min_value=1
     )
@@ -17,7 +17,7 @@ class ProductsForm(forms.Form):
             attrs={'class': 'form-control-sm'}
         ),
         required=False,
-        max_value=20,
+        max_value=10,
         min_value=0
     )
 
@@ -26,7 +26,7 @@ class ProductsForm(forms.Form):
             attrs={'class': 'form-control-sm'}
         ),
         required=False,
-        max_value=20,
+        max_value=10,
         min_value=0
     )
 

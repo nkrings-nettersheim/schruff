@@ -24,13 +24,6 @@
                 </div>
             </div>
             {% if order.product_id == '10' %}
-                <div class="row">
-                    <div class="col-12 form-group text-center">
-                        <label for="{{ form.reibekuchen_count.id_for_label }}">Wieviel Einzel-Reibekuchen sollen es den sein ({{ order.EUR_REIBEKUCHEN|floatformat:"2" }} €/St.)?:</label><br>
-                        {{ form.reibekuchen_count }}
-                        {{ form.reibekuchen_count.errors }}
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="col-12 form-group text-center">
@@ -47,7 +40,15 @@
                         {{ form.lachs_count.errors }}
                     </div>
                 </div>
-            {% elif order.product_id == '20' %}
+                <div class="row">
+                    <div class="col-12 form-group text-center">
+                        <label for="{{ form.reibekuchen_count.id_for_label }}">Wieviel Einzel-Reibekuchen sollen es den sein ({{ order.EUR_REIBEKUCHEN|floatformat:"2" }} €/St.)?:</label><br>
+                        {{ form.reibekuchen_count }}
+                        {{ form.reibekuchen_count.errors }}
+                    </div>
+                </div>
+
+                {% elif order.product_id == '20' %}
                 <div class="row">
                     <div class="col-12 form-group text-center">
                         <label for="{{ form.broetchen_standard_count.id_for_label }}">Spießbraten Standard ({{ order.EUR_SPIESSBRATEN_STANDARD|floatformat:"2" }} €/St.):</label><br>

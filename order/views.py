@@ -192,9 +192,9 @@ def thanks(request):
 
                 mail_content_seller = (f"Hallo,\n\n \
 Hier ist die Bestellung für {request.session['customer_name']}. Er möchte:\n\n \
-Anzahl Reibekuchen : {request.session['reibekuchen_count']}\n \
-Anzahl Apfelkompott: {request.session['apfelkompott_count']}\n \
-Anzahl Lachs       : {request.session['lachs_count']}\n \
+Portion mit Apfelkompott/Brot: {request.session['apfelkompott_count']}\n \
+Portion mit Lachs/Brot       : {request.session['lachs_count']}\n \
+Anzahl Einzel Reibekuchen    : {request.session['reibekuchen_count']}\n \
 weitere Wünsche    : {request.session['wishes']}\n\n \
 Rufnummer          : {request.session['callnumber']}\n \
 E-Mail Adresse     : {request.session['email']}\n\n \
@@ -204,9 +204,9 @@ Gruß Dein Bestelltool")
 
                 mail_content_customer = (f"Hallo,\n\n \
 Hier die Infos zu Deiner Bestellung bei der Gaststätte Schruff:\n\n \
-Anzahl Reibekuchen : {request.session['reibekuchen_count']}\n \
-Anzahl Apfelkompott: {request.session['apfelkompott_count']}\n \
-Anzahl Lachs       : {request.session['lachs_count']}\n \
+Portion Reibekuchen (3 Stück) mit Apfelkompott und Brot       : {request.session['apfelkompott_count']}\n \
+Portion Reibekuchen (3 Stück) mit Lachs/Meerrettich und Brot  : {request.session['lachs_count']}\n \
+Anzahl Einzel Reibekuchen : {request.session['reibekuchen_count']}\n \
 weitere Wünsche    : {request.session['wishes']}\n\n \
 Rufnummer          : {request.session['callnumber']}\n \
 E-Mail Adresse     : {request.session['email']}\n\n \
@@ -214,7 +214,7 @@ Abholtag           : {request.session['order_day_view']}\n \
 Abholzeit          : {request.session['collectiontime']}\n\n \
 Bezahlt wird vor Ort an der Theke!\n\n \
 Vielen Dank für Deine Bestellung!!!\n\n \
-Gruß \Brigitte")
+Gruß \nBrigitte")
 
                 order_long_string = (f"Reibekuchen:{request.session['reibekuchen_count']};"
                                      f"Apfelkompott:{request.session['apfelkompott_count']};"

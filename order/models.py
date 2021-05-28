@@ -27,10 +27,14 @@ class Order(models.Model):
     order_time = models.DateTimeField(default='1900-01-01 00:00:00')
     order_long = models.CharField(max_length=500, blank=True)
     wishes = models.TextField(blank=True)
+    price = models.CharField(max_length=10, blank=True)
+    session = models.CharField(max_length=100, blank=True)
+    session_time = models.DateTimeField(default='1900-01-01 00:00:00')
 
     def __str__(self):
         return self.name
 
+#Dieses model wird aktuell nicht verwendet
 class Order_details(models.Model):
     product = models.CharField(max_length=100, blank=False)
     product_count = models.IntegerField()

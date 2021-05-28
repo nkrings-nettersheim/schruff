@@ -41,19 +41,19 @@ def index(request):
     if 'email' in request.session:
         del request.session['email']
 
-    logger.info(f"Aufruf index.html")
+    logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf index.html")
     return render(request, 'order/index.html', )
 
 
 def impressum(request):
     content = Content_text.objects.get(content_kurz='Impressum')
-    logger.info(f"Aufruf impressum.html")
+    logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf impressum.html")
     return render(request, 'order/impressum.html', {'content': content})
 
 
 def datenschutz(request):
     content = Content_text.objects.get(content_kurz='Datenschutz')
-    logger.info(f"Aufruf datenschutz.html")
+    logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf datenschutz.html")
     return render(request, 'order/datenschutz.html',  {'content': content})
 
 
@@ -63,14 +63,15 @@ def collectiondate(request):
     time_now = datetime.datetime.now().strftime('%H')
     if p == '10':
         product_long = 'Reibekuchen'
+        logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Bestellseite Reibekuchen aufgerufen")
         if int(time_now) < settings.LOT_REIBEKUCHEN:
             order_days = Order_days.objects.filter(reibekuchen=True, order_day__gte=datetime.datetime.now()).order_by('order_day')[:2]
         else:
-            order_days = Order_days.objects.filter(reibekuchen=True, order_day__gt=datetime.datetime.now()).order_by(
-                'order_day')[:2]
+            order_days = Order_days.objects.filter(reibekuchen=True, order_day__gt=datetime.datetime.now()).order_by('order_day')[:2]
 
     elif p == '20':
         product_long = 'Spießbratenbrötchen'
+        logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Bestellseite Spießbratenbrötchen aufgerufen")
         if int(time_now) < settings.LOT_SPIESSBRATEN:
             order_days = Order_days.objects.filter(spiessbraten=True, order_day__gte=datetime.datetime.now()).order_by('order_day')[:2]
         else:
@@ -101,10 +102,13 @@ def product(request):
             request.session['EUR_SPIESSBRATEN_SPECIAL'] = settings.EUR_SPIESSBRATEN_SPECIAL
             request.session['EUR_KARTOFFELSALAT'] = settings.EUR_KARTOFFELSALAT
             form = ProductsForm()
+            logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Produktbestellseite aufgerufen")
             return render(request, 'order/product.html', {'form': form, 'order': request.session})
         else:
+            logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; Aufruf product Seite mit GET")
             return render(request, 'order/index.html')
     else:
+        logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; Aufruf product Seite ohne product_id")
         return render(request, 'order/index.html')
 
 
@@ -118,6 +122,8 @@ def collectiontime(request):
                 request.session['wishes'] = request.POST['wishes']
                 order_day = request.session['order_day'].split("-")
                 collectiontime_list = Order_times.objects.filter(order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])), booked=False).order_by('order_time')
+                logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; R: {request.session['reibekuchen_count']};"
+                            f"A: {request.session['apfelkompott_count']};L: {request.session['lachs_count']}")
                 return render(request, 'order/collectiontime.html', {'order': request.session, 'times': collectiontime_list})
 
             elif request.session['product_id'] == '20':
@@ -127,13 +133,20 @@ def collectiontime(request):
                 request.session['wishes'] = request.POST['wishes']
                 order_day = request.session['order_day'].split("-")
                 collectiontime_list = Order_times.objects.filter(order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])), booked=False).order_by('order_time')
-                return render(request, 'order/collectiontime.html', {'order': request.session, 'times': collectiontime_list})
+                logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; B: {request.session['broetchen_standard_count']};"
+                            f"S: {request.session['broetchen_special_count']};"
+                            f"K: {request.session['kartoffelsalat_count']}")
+                return render(request, 'order/collectiontime.html', {'order': request.session,
+                                                                     'times': collectiontime_list})
 
             else:
+                logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf collectiontime Seite mit falscher product_id")
                 return render(request, 'order/index.html')
         else:
+            logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf collectiontime Seite mit GET")
             return render(request, 'order/index.html')
     else:
+        logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf collectiontime Seite ohne product_id")
         return render(request, 'order/index.html')
 
 
@@ -141,9 +154,9 @@ def customer(request):
     if request.session['product_id']:
         if request.method == "POST":
             request.session['collectiontime'] = request.POST['collectiontime']
-
-            #collectiontime_view = datetime.datetime.strptime(request.session['collectiontime'], '%Y-%m-%d %H:%M:%S')
             form = CustomerForm()
+            logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; "
+                        f"Aufruf customer Seite mit {request.session['collectiontime']} als Abholzeit")
             return render(request, 'order/customer.html', {'form': form, 'order': request.session})
         else:
             return render(request, 'order/index.html')
@@ -174,7 +187,10 @@ def complete(request):
             if 'kartoffelsalat_count' in request.session and request.session['kartoffelsalat_count'] != '':
                 price = price + int(request.session['kartoffelsalat_count']) * float(request.session['EUR_KARTOFFELSALAT'])
 
-            request.session['price'] = price
+            request.session['price'] = '%.2f' %round(price, 2)
+            logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; "
+                        f"Zusammenstellung für {request.session['customer_name']} zum Preis von {request.session['price']} €")
+
             return render(request, 'order/complete.html', {'order': request.session, 'collectiontime_view': collectiontime_view})
         else:
             return render(request, 'order/index.html')
@@ -189,12 +205,14 @@ def thanks(request):
             mail_content_customer = ""
 
             if request.session['product_id'] == '10':
-
+                logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; "
+                            f"E-Mail versenden Reibekuchenbestellung für {request.session['customer_name']}")
                 mail_content_seller = (f"Hallo,\n\n \
 Hier ist die Bestellung für {request.session['customer_name']}. Er möchte:\n\n \
 Portion mit Apfelkompott/Brot: {request.session['apfelkompott_count']}\n \
 Portion mit Lachs/Brot       : {request.session['lachs_count']}\n \
 Anzahl Einzel Reibekuchen    : {request.session['reibekuchen_count']}\n \
+Preis (ohne weitere Wünsche) : {request.session['price']}\n \
 weitere Wünsche    : {request.session['wishes']}\n\n \
 Rufnummer          : {request.session['callnumber']}\n \
 E-Mail Adresse     : {request.session['email']}\n\n \
@@ -206,7 +224,8 @@ Gruß Dein Bestelltool")
 Hier die Infos zu Deiner Bestellung bei der Gaststätte Schruff:\n\n \
 Portion Reibekuchen (3 Stück) mit Apfelkompott und Brot       : {request.session['apfelkompott_count']}\n \
 Portion Reibekuchen (3 Stück) mit Lachs/Meerrettich und Brot  : {request.session['lachs_count']}\n \
-Anzahl Einzel Reibekuchen : {request.session['reibekuchen_count']}\n \
+Anzahl Einzel Reibekuchen    : {request.session['reibekuchen_count']}\n \
+Preis (ohne weitere Wünsche) : {request.session['price']}\n \
 weitere Wünsche    : {request.session['wishes']}\n\n \
 Rufnummer          : {request.session['callnumber']}\n \
 E-Mail Adresse     : {request.session['email']}\n\n \
@@ -223,12 +242,14 @@ Gruß \nBrigitte")
                                      )
 
             elif request.session['product_id'] == '20':
-
+                logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; "
+                            f"E-Mail versenden Spießbratenbrötchen für {request.session['customer_name']}")
                 mail_content_seller = (f"Hallo,\n\n \
 Hier ist die Bestellung für {request.session['customer_name']}. Er möchte:\n\n \
 Spießbratenbrötchen (Standard) : {request.session['broetchen_standard_count']}\n \
 Spießbratenbrötchen (Spezial) : {request.session['broetchen_special_count']}\n \
 Anzahl Kartoffelsalat: {request.session['kartoffelsalat_count']}\n \
+Preis (ohne weitere Wünsche) : {request.session['price']}\n \
 weitere Wünsche    : {request.session['wishes']}\n\n \
 Rufnummer          : {request.session['callnumber']}\n \
 E-Mail Adresse     : {request.session['email']}\n\n \
@@ -238,9 +259,10 @@ Gruß Dein Bestelltool")
 
                 mail_content_customer = (f"Hallo,\n\n \
 Hier die Infos zu Deiner Bestellung bei der Gaststätte Schruff:\n\n \
-Spießbratenbrötchen (Standard) : {request.session['broetchen_standard_count']}\n \
+Spießbratenbrötchen (Standard): {request.session['broetchen_standard_count']}\n \
 Spießbratenbrötchen (Spezial) : {request.session['broetchen_special_count']}\n \
-Anzahl Kartoffelsalat: {request.session['kartoffelsalat_count']}\n \
+Anzahl Kartoffelsalat         : {request.session['kartoffelsalat_count']}\n \
+Preis (ohne weitere Wünsche)  : {request.session['price']}\n \
 weitere Wünsche    : {request.session['wishes']}\n\n \
 Rufnummer          : {request.session['callnumber']}\n \
 E-Mail Adresse     : {request.session['email']}\n\n \
@@ -275,18 +297,22 @@ Gruß Dein Bestelltool")
                 fail_silently=False,
             )
 
-
             #save everything in the database
             order = Order(name=request.session['customer_name'],
-                          callnumber=request.session['customer_name'],
+                          callnumber=request.session['callnumber'],
                           email=request.session['email'],
                           order_day=request.session['order_day'],
                           order_time=request.session['collectiontime'],
                           order_long=order_long_string,
-                          wishes=request.session['email']
+                          price=request.session['price'],
+                          wishes=request.session['email'],
+                          session=request.session.session_key,
+                          session_time=datetime.datetime.now()
                           )
 
             order.save()
+            logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; "
+                        f"Daten in Datenbank für {request.session['customer_name']} gespeichert")
 
             #booked time setzen
             ct = get_object_or_404(Order_times, order_time=request.session['collectiontime'])

@@ -82,7 +82,7 @@
                 <br>
                 <div class="row">
                     <div class="col-12 text-center">
-                        <button type="button" class="btn btn-secondary" onclick="history.go(-1)">zurück</button>
+                        <a class="btn btn-secondary" href="{% url 'order:collectiondate' %}?p={{ order.product_id }}">zurück</a>
                         <button type="submit" class="btn btn-secondary">weiter</button>
                     </div>
                 </div>

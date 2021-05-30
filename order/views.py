@@ -8,8 +8,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib.auth.decorators import login_required
 from django.template.loader import render_to_string
+from django.db.models import Q
 from weasyprint import HTML, CSS
-from weasyprint.fonts import FontConfiguration
 
 
 from .forms import ProductsForm, CustomerForm
@@ -346,8 +346,9 @@ def start_fasttrack(request):
 
 @login_required
 def start_order_list(request):
-    order_days = Order_days.objects.filter(order_day__gte=datetime.datetime.now()).order_by(
-        'order_day')[:6]
+    order_days = Order_days.objects.filter(Q(order_day__gte=datetime.datetime.now()),
+                                           Q(reibekuchen=True) | Q(spiessbraten=True)).order_by('order_day')[:6]
+
     logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf orderlist.html")
     return render(request, 'order/orderliststart.html', {'days': order_days} )
 

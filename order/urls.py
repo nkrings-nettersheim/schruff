@@ -14,4 +14,7 @@ urlpatterns = [
     path('customer/', views.customer, name='customer'),
     path('complete/', views.complete, name='complete'),
     path('thanks/', views.thanks, name='thanks'),
+    path('startfasttrack/', views.start_fasttrack, name='fasttrackstart'),
+    path('startorderlist/', views.start_order_list, name='orderliststart'),
+    path('orderlist/', views.order_list, name='orderlist'),
 ]

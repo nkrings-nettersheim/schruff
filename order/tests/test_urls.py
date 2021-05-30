@@ -1,6 +1,7 @@
 from django.test import SimpleTestCase
 from django.urls import resolve, reverse
-from ..views import index, impressum, datenschutz, collectiondate, collectiontime, product, customer, complete, thanks
+from ..views import index, impressum, datenschutz, collectiondate, collectiontime, product, customer, complete, thanks, \
+    start_fasttrack, start_order_list, order_list
 
 
 class TestUrls(SimpleTestCase):
@@ -40,4 +41,16 @@ class TestUrls(SimpleTestCase):
     def test_url_thanks_is_resolved(self):
         url = reverse('order:thanks')
         self.assertEqual(resolve(url).func, thanks)
+
+    def test_url_fasttrackstart_is_resolved(self):
+        url = reverse('order:fasttrackstart')
+        self.assertEqual(resolve(url).func, start_fasttrack)
+
+    def test_url_orderliststart_is_resolved(self):
+        url = reverse('order:orderliststart')
+        self.assertEqual(resolve(url).func, start_order_list)
+
+    def test_url_orderlist_is_resolved(self):
+        url = reverse('order:orderlist')
+        self.assertEqual(resolve(url).func, order_list)
 

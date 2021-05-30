@@ -6,6 +6,11 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.mail import send_mail
+from django.contrib.auth.decorators import login_required
+from django.template.loader import render_to_string
+from weasyprint import HTML, CSS
+from weasyprint.fonts import FontConfiguration
+
 
 from .forms import ProductsForm, CustomerForm
 from .models import Order_days, Order_times, Order, Content_text
@@ -84,6 +89,7 @@ def collectiondate(request):
     request.session['product_long'] = product_long
 
     return render(request, 'order/collectiondate.html', {'order': request.session, 'days': order_days})
+
 
 def product(request):
     if request.session['product_id']:
@@ -235,10 +241,10 @@ Bezahlt wird vor Ort an der Theke!\n\n \
 Vielen Dank für Deine Bestellung!!!\n\n \
 Gruß \nBrigitte")
 
-                order_long_string = (f"Reibekuchen:{request.session['reibekuchen_count']};"
-                                     f"Apfelkompott:{request.session['apfelkompott_count']};"
-                                     f"Lachs:{request.session['lachs_count']};"
-                                     f"Wünsche:{request.session['wishes']};"
+                order_long_string = (f"Apfelkompott: {request.session['apfelkompott_count']}; "
+                                     f"Lachs: {request.session['lachs_count']}; "
+                                     f"Reibekuchen: {request.session['reibekuchen_count']}; "
+                                     f"Wünsche: {request.session['wishes']}; "
                                      )
 
             elif request.session['product_id'] == '20':
@@ -272,9 +278,9 @@ Bezahlt wird vor Ort an der Theke!\n\n \
 Vielen Dank für Deine Bestellung!!!\n\n \
 Gruß Dein Bestelltool")
 
-                order_long_string = (f"Spießbraten (Standard):{request.session['broetchen_standard_count']};"
-                                     f"Spießbraten (Spezial):{request.session['broetchen_special_count']};"
-                                     f"Kartoffelsalat:{request.session['kartoffelsalat_count']};"
+                order_long_string = (f"Spießbraten (Standard): {request.session['broetchen_standard_count']}; "
+                                     f"Spießbraten (Spezial): {request.session['broetchen_special_count']}; "
+                                     f"Kartoffelsalat: {request.session['kartoffelsalat_count']}; "
                                      f"Wünsche:{request.session['wishes']};"
                                      )
 
@@ -332,6 +338,43 @@ Gruß Dein Bestelltool")
         return render(request, 'order/index.html')
 
 
+@login_required
+def start_fasttrack(request):
+    logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf fasttrack.html")
+    return render(request, 'order/fasttrackstart.html', )
+
+
+@login_required
+def start_order_list(request):
+    order_days = Order_days.objects.filter(order_day__gte=datetime.datetime.now()).order_by(
+        'order_day')[:6]
+    logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf orderlist.html")
+    return render(request, 'order/orderliststart.html', {'days': order_days} )
+
+
+@login_required
+def order_list(request):
+    if request.method == "POST":
+        order = dict()
+        orders = Order.objects.filter(order_day=request.POST.get('bestelltag')).order_by('order_time')
+        bestelltagsplit = request.POST.get('bestelltag').split("-")
+        order['bestelltag'] = datetime.datetime(int(bestelltagsplit[0]), int(bestelltagsplit[1]), int(bestelltagsplit[2]))
+        order['printtime'] = datetime.datetime.now()
+
+        filename = "Bestellliste.pdf"
+
+        html_string = render_to_string('pdf_templates/orderlist.html', {'order': order,
+                                                                        'orders': orders})
+
+        html = HTML(string=html_string, base_url=request.build_absolute_uri())
+        pdf = html.write_pdf(stylesheets=[CSS(settings.STATIC_ROOT + '/order/css/orderlist.css')])
+        response = HttpResponse(pdf, content_type='application/pdf')
+        response['Content-Disposition'] = 'attachment; filename=' + filename
+        logger.info(f"{request.META.get('HTTP_X_REAL_IP')};{request.session.session_key}; Bestellliste gedruckt")
+
+        return response
+    else:
+        return render(request, 'order/index.html')
 
 # **************************************************************************************************
 LOGLEVEL = os.environ.get('LOGLEVEL', 'info').upper()

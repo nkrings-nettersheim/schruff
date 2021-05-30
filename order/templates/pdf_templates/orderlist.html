@@ -1,0 +1,35 @@
+
+
+<div id="header">Bestellliste für den {{ order.bestelltag | date:"d.m.Y"}}</div>
+<div id="abholzeit">Abholzeit: </div>
+<div id="bestellung">Bestellung:</div>
+<div id="besteller">Besteller:</div>
+<div id="preis">Preis:</div>
+
+<div id="line1">&nbsp;</div>
+
+{% for item in orders %}
+    <table class="table_content" class="fixed">
+        <tr>
+            <td class="td1">{{ item.order_time| date:"H:i" }}</td>
+            <td class="td2">{{ item.order_long }}</td>
+            <td class="td3">{{ item.name }}</td>
+            <td class="td4">{{ item.price }} €</td>
+        </tr>
+    </table>
+
+    {% if forloop.counter|divisibleby:18 %}
+
+
+        {% comment %}
+            Either of the following two lines works fine.
+        {% endcomment %}
+
+        <div style="page-break-after: always;"></div>
+        {# <div style="page-break-before: always;"></div> #}
+    {% endif %}
+{% endfor %}
+
+<div id="footer">Gaststätte Schruff</div>
+<div id="print_date">Druckdatum: {{ order.printtime | date:"d.m.Y H:i" }}</div>
+

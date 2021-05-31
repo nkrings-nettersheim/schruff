@@ -1,8 +1,35 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 
 
 class ProductsForm(forms.Form):
+
+    def clean(self):
+        cleaned_data = super().clean()
+        rc = cleaned_data.get("reibekuchen_count")
+        if rc == None:
+            rc = 0
+        ac = cleaned_data.get("apfelkompott_count")
+        if ac == None:
+            ac = 0
+        lc = cleaned_data.get("lachs_count")
+        if lc == None:
+            lc = 0
+        bc = cleaned_data.get("broetchen_standard_count")
+        if bc == None:
+            bc = 0
+        bsc = cleaned_data.get("broetchen_special_count")
+        if bsc == None:
+            bsc = 0
+        kc = cleaned_data.get("kartoffelsalat_count")
+        if kc == None:
+            kc = 0
+        if rc + ac + lc + bc + bsc + kc == 0:
+            raise ValidationError("Bitte mindestens ein Produkt auswählen!")
+
+
+
     reibekuchen_count = forms.IntegerField(
         widget=forms.NumberInput(
             attrs={'class': 'form-control-sm'}

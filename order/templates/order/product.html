@@ -23,6 +23,11 @@
                     <p class="text-center">Du bestellst {{ order.product_long }} für den {{ order.order_day_view }}</p>
                 </div>
             </div>
+            <div class="row">
+                <div class="col text-center text-danger">
+                    {{ form.non_field_errors.as_text }}
+                </div>
+            </div>
             {% if order.product_id == '10' %}
 
                 <div class="row">

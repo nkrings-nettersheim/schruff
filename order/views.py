@@ -120,37 +120,43 @@ def product(request):
 
 def collectiontime(request):
     if request.session['product_id']:
-        if request.method == "POST":
-            if request.session['product_id'] == '10':
-                request.session['reibekuchen_count'] = request.POST['reibekuchen_count']
-                request.session['apfelkompott_count'] = request.POST['apfelkompott_count']
-                request.session['lachs_count'] = request.POST['lachs_count']
-                request.session['wishes'] = request.POST['wishes']
-                order_day = request.session['order_day'].split("-")
-                collectiontime_list = Order_times.objects.filter(order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])), booked=False).order_by('order_time')
-                logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; R: {request.session['reibekuchen_count']};"
-                            f"A: {request.session['apfelkompott_count']};L: {request.session['lachs_count']}")
-                return render(request, 'order/collectiontime.html', {'order': request.session, 'times': collectiontime_list})
+        form = ProductsForm(request.POST)
+        if form.is_valid():
+            if request.method == "POST":
+                if request.session['product_id'] == '10':
+                    request.session['reibekuchen_count'] = request.POST['reibekuchen_count']
+                    request.session['apfelkompott_count'] = request.POST['apfelkompott_count']
+                    request.session['lachs_count'] = request.POST['lachs_count']
+                    request.session['wishes'] = request.POST['wishes']
+                    order_day = request.session['order_day'].split("-")
+                    collectiontime_list = Order_times.objects.filter(order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])), booked=False).order_by('order_time')
+                    logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; R: {request.session['reibekuchen_count']}; "
+                                f"A: {request.session['apfelkompott_count']}; L: {request.session['lachs_count']}")
+                    return render(request, 'order/collectiontime.html', {'order': request.session, 'times': collectiontime_list})
 
-            elif request.session['product_id'] == '20':
-                request.session['broetchen_standard_count'] = request.POST['broetchen_standard_count']
-                request.session['broetchen_special_count'] = request.POST['broetchen_special_count']
-                request.session['kartoffelsalat_count'] = request.POST['kartoffelsalat_count']
-                request.session['wishes'] = request.POST['wishes']
-                order_day = request.session['order_day'].split("-")
-                collectiontime_list = Order_times.objects.filter(order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])), booked=False).order_by('order_time')
-                logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; B: {request.session['broetchen_standard_count']};"
-                            f"S: {request.session['broetchen_special_count']};"
-                            f"K: {request.session['kartoffelsalat_count']}")
-                return render(request, 'order/collectiontime.html', {'order': request.session,
-                                                                     'times': collectiontime_list})
+                elif request.session['product_id'] == '20':
+                    request.session['broetchen_standard_count'] = request.POST['broetchen_standard_count']
+                    request.session['broetchen_special_count'] = request.POST['broetchen_special_count']
+                    request.session['kartoffelsalat_count'] = request.POST['kartoffelsalat_count']
+                    request.session['wishes'] = request.POST['wishes']
+                    order_day = request.session['order_day'].split("-")
+                    collectiontime_list = Order_times.objects.filter(order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])), booked=False).order_by('order_time')
+                    logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; B: {request.session['broetchen_standard_count']}; "
+                                f"S: {request.session['broetchen_special_count']}; "
+                                f"K: {request.session['kartoffelsalat_count']}")
+                    return render(request, 'order/collectiontime.html', {'order': request.session,
+                                                                         'times': collectiontime_list})
 
+                else:
+                    logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf collectiontime Seite mit falscher product_id")
+                    return render(request, 'order/index.html')
             else:
-                logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf collectiontime Seite mit falscher product_id")
+                logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf collectiontime Seite mit GET")
                 return render(request, 'order/index.html')
         else:
-            logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf collectiontime Seite mit GET")
-            return render(request, 'order/index.html')
+            form = ProductsForm(request.POST)
+            logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Produktbestellseite aufgerufen nach Nulleingabe")
+            return render(request, 'order/product.html', {'form': form, 'order': request.session})
     else:
         logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf collectiontime Seite ohne product_id")
         return render(request, 'order/index.html')

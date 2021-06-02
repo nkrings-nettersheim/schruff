@@ -31,7 +31,7 @@
     <div class="row">&nbsp;</div>
     <div class="row">
         <div class="col-sm-12">
-        <form action="{% url 'order:orderlist' %}" method="post">
+        <form action="{% url 'order:fasttrack' %}" method="post">
             {% csrf_token %}
 
             <div class="row">
@@ -39,7 +39,7 @@
             </div>
             <div class="row">
                 <div class="col text-center">
-                    <p>Du bestellst {{order.product_long}} für den ... ? </p>
+                    <p>Du bestellst für den ... ? </p>
                 </div>
             </div>
             <div class="row">

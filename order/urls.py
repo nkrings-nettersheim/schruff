@@ -15,6 +15,8 @@ urlpatterns = [
     path('complete/', views.complete, name='complete'),
     path('thanks/', views.thanks, name='thanks'),
     path('startfasttrack/', views.start_fasttrack, name='fasttrackstart'),
+    path('fasttrack/', views.fasttrack, name='fasttrack'),
+    path('fasttracksave/', views.fasttrack_save, name='fasttracksave'),
     path('startorderlist/', views.start_order_list, name='orderliststart'),
     path('orderlist/', views.order_list, name='orderlist'),
 ]

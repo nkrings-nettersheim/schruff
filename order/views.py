@@ -2,7 +2,7 @@ import logging
 import os
 import datetime
 #from datetime import datetime
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.mail import send_mail
@@ -12,7 +12,7 @@ from django.db.models import Q
 from weasyprint import HTML, CSS
 
 
-from .forms import ProductsForm, CustomerForm
+from .forms import ProductsForm, CustomerForm, FasttrackForm
 from .models import Order_days, Order_times, Order, Content_text
 
 BASE_DIR = settings.BASE_DIR
@@ -185,7 +185,6 @@ def complete(request):
             collectiontime_view = datetime.datetime.strptime(request.session['collectiontime'], '%Y-%m-%d %H:%M:%S')
             #to charge the price
             price = 0.0
-            #if ('reibekuchen_count' in request.session):
             if 'reibekuchen_count' in request.session and request.session['reibekuchen_count'] != '':
                     price = price + int(request.session['reibekuchen_count']) * float(request.session['EUR_REIBEKUCHEN'])
             if 'apfelkompott_count' in request.session and request.session['apfelkompott_count'] != '':
@@ -346,8 +345,81 @@ Gruß Dein Bestelltool")
 
 @login_required
 def start_fasttrack(request):
+    order_days = Order_days.objects.filter(Q(order_day__gte=datetime.datetime.now()),
+                                           Q(reibekuchen=True) | Q(spiessbraten=True)).order_by('order_day')[:6]
     logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf fasttrack.html")
-    return render(request, 'order/fasttrackstart.html', )
+    return render(request, 'order/fasttrackstart.html', {'days': order_days})
+
+
+@login_required
+def fasttrack(request):
+    if request.method == "POST":
+        form = FasttrackForm()
+        request.session['order_day'] = request.POST['bestelltag']
+        order_day = request.POST['bestelltag'].split("-")
+        collectiontime_list = Order_times.objects.filter(
+            order_time__date=datetime.date(int(order_day[0]), int(order_day[1]), int(order_day[2])),
+            booked=False).order_by('order_time')
+
+        logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; Aufruf fasttrack.html")
+        return render(request, 'order/fasttrack.html', {'form': form, 'times': collectiontime_list})
+    else:
+        pass
+
+def fasttrack_save(request):
+    if request.method == "POST":
+        form = FasttrackForm(request.POST)
+        if form.is_valid():
+            price = 0.0
+            if 'reibekuchen_count' in request.session and request.session['reibekuchen_count'] != '':
+                    price = price + int(request.session['reibekuchen_count']) * float(request.session['EUR_REIBEKUCHEN'])
+            if 'apfelkompott_count' in request.session and request.session['apfelkompott_count'] != '':
+                price = price + int(request.session['apfelkompott_count']) * float(request.session['EUR_APFELKOMPOTT'])
+            if 'lachs_count' in request.session and request.session['lachs_count'] != '':
+                price = price + int(request.session['lachs_count']) * float(request.session['EUR_LACHS'])
+            if 'broetchen_standard_count' in request.session and request.session['broetchen_standard_count'] != '':
+                price = price + int(request.session['broetchen_standard_count']) * float(request.session['EUR_SPIESSBRATEN_STANDARD'])
+            if 'broetchen_special_count' in request.session and request.session['broetchen_special_count'] != '':
+                price = price + int(request.session['broetchen_special_count']) * float(request.session['EUR_SPIESSBRATEN_SPECIAL'])
+            if 'kartoffelsalat_count' in request.session and request.session['kartoffelsalat_count'] != '':
+                price = price + int(request.session['kartoffelsalat_count']) * float(request.session['EUR_KARTOFFELSALAT'])
+            request.session['price'] = '%.2f' %round(price, 2)
+
+            order_long_string = (f"Apfelkompott: {request.POST['apfelkompott_count']}; "
+                                 f"Lachs: {request.POST['lachs_count']}; "
+                                 f"Reibekuchen: {request.POST['reibekuchen_count']}; "
+                                 f"Spießbraten (Standard): {request.POST['broetchen_standard_count']}; "
+                                 f"Spießbraten (Spezial): {request.POST['broetchen_special_count']}; "
+                                 f"Kartoffelsalat: {request.POST['kartoffelsalat_count']}; "
+                                 f"Wünsche: {request.POST['wishes']}; "
+                                 )
+            order = Order(name=request.POST['customer_name'],
+                          callnumber=request.POST['callnumber'],
+                          email=request.POST['email'],
+                          order_day=request.session['order_day'],
+                          order_time=request.POST['collectiontime'],
+                          order_long=order_long_string,
+                          price=request.session['price'],
+                          wishes=request.POST['email'],
+                          session=request.session.session_key,
+                          session_time=datetime.datetime.now()
+                          )
+
+            order.save()
+
+            #booked time setzen
+            ct = get_object_or_404(Order_times, order_time=request.POST['collectiontime'])
+            ct.booked = True
+            ct.save(update_fields=['booked'])
+
+            logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; fasttrack save erfolgreich")
+            return redirect('/order/')
+        else:
+            logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; fasttrack save not valid")
+            return redirect('/order/')
+    else:
+        logger.info(f"{request.META.get('HTTP_X_REAL_IP')}; {request.session.session_key}; fasttrack save no POST")
+        return redirect('/order/')
 
 
 @login_required

@@ -122,3 +122,86 @@ class CustomerForm(forms.Form):
         required=False,
         max_length=75,
     )
+
+
+class FasttrackForm(forms.Form):
+
+    #collectiontime = forms.ChoiceField()
+
+    reibekuchen_count = forms.IntegerField(
+        widget=forms.NumberInput(
+            attrs={'class': 'form-control-sm'}
+        ),
+        required=False,
+        max_value=20,
+        min_value=0
+    )
+
+    apfelkompott_count = forms.IntegerField(
+        widget=forms.NumberInput(
+            attrs={'class': 'form-control-sm'}
+        ),
+        required=False,
+        max_value=10,
+        min_value=0
+    )
+
+    lachs_count = forms.IntegerField(
+        widget=forms.NumberInput(
+            attrs={'class': 'form-control-sm'}
+        ),
+        required=False,
+        max_value=10,
+        min_value=0
+    )
+
+    broetchen_standard_count = forms.IntegerField(
+        widget=forms.NumberInput(
+            attrs={'class': 'form-control-sm'}
+        ),
+        required=False,
+        max_value=20,
+        min_value=0
+    )
+
+    broetchen_special_count = forms.IntegerField(
+        widget=forms.NumberInput(
+            attrs={'class': 'form-control-sm'}
+        ),
+        required=False,
+        max_value=20,
+        min_value=0
+    )
+
+    kartoffelsalat_count = forms.IntegerField(
+        widget=forms.NumberInput(
+            attrs={'class': 'form-control-sm'}
+        ),
+        required=False,
+        max_value=20,
+        min_value=0
+    )
+
+    wishes = forms.CharField(
+        widget=forms.Textarea(
+            attrs={'rows': 5, 'cols': 30}
+        ),
+        required=False)
+
+    customer_name = forms.CharField(
+        widget=forms.TextInput(),
+        required=False,
+        max_length=100
+    )
+
+    callnumber = forms.CharField(
+        widget=forms.TextInput(),
+        required=False,
+        max_length=25
+    )
+
+    email = forms.EmailField(
+        widget=forms.EmailInput(),
+        required=False,
+        max_length=75,
+    )
